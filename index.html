@@ -51,13 +51,14 @@
     #produtos { padding:40px 60px; }
     #produtos .title { text-align:center; font-size:36px; margin-bottom:40px; }
     #Div-Prod { display:grid; grid-template-columns:repeat(2,1fr); gap:30px;  padding: 60px;}
-    .product { background:rgba(255,255,255,.08); border-radius:16px; padding:24px; display:flex; gap:20px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.08); }
-    .product img { width:90px; flex-shrink:0; }
-    .product .info { flex:1; }
-    .product h3 { font-size:20px; margin-bottom:6px; }
-    .product .price { color:#ffd400; font-weight:bold; font-size:20px; margin-bottom:10px; }
-    .product p { font-size:14px; line-height:1.4; opacity:0.9}
-    .product button { margin-top:14px; padding:10px 18px; background:#2b2d31; border:none; border-radius:8px; color:#fff; cursor:pointer; }
+
+    .product       {background:rgba(255,255,255,.08); border-radius:16px; padding:24px; display:flex; gap:20px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.08); }
+    .product img   {width:105px; height: 130px; flex-shrink:0}
+    .product .info {flex:1; }
+    .product h3    {font-size:20px; }
+    .product .price{font-size:20px; color:#ffd400; font-weight:bold;}
+    .product p     {font-size:14px; line-height:1.4; opacity:0.9}
+    .product button{padding:10px 18px; background:#2b2d31; border:none; border-radius:8px; color:#fff; cursor:pointer; }
 
     #DivTableADM{padding: 60px;}
     table{border-collapse:collapse;background:#2f3236;color:#fff;font-size:14px}
@@ -69,6 +70,11 @@
     table p:focus{background:#2563eb;color:#fff}
     td.Foco{background:#3b82f6}
     td.Foco p{background:#2563eb;color:#fff}
+
+
+    .FModal{position:fixed;top:0px; left:0px;width:100%;height:100%;z-index:999;background:#00000046;backdrop-filter:blur(10px);animation:FModal 0.5s}
+    .FModal > *{padding:15px; box-shadow: 10px 10px 20px black;animation: modal 0.5s}
+    .FModal > *{background:#1b1b1b}
 </style>
 
 <script> // BASE DE DADOS
@@ -114,7 +120,31 @@
                 .SS2 img{width: 40px;}
                 .SS2 p{font-size: 15px}
                 .SS2 a{font-size: 10px; color: #ffffff7e;}
+
+                .SS3 {height: 230px; background:#f5f6f8; padding: 0px 50px ;}
+                .SS3 > .Prods > div{width: 100%;gap: 15px; overflow-x: scroll; flex-wrap: nowrap !important; color: black !important;}
+                .Prods                {gap: 10px;}
+                .Prods .product       {height: 180px; width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,.3); padding: 5px; gap: 0;}
+                .Prods .product > div {flex-wrap: nowrap !important; width: 200px;}
+                .Prods .product h3    {font-size:15px}
+                .Prods .product .price{font-size:15px}
+                .Prods .product p     {font-size:9px}
+                .btnFora{display: none;}
+                .Prods .btnIn{display: none;}
+                .Prods .btnFora{display: flex;}
+
+                .SS4 {height: 500px;}
+
+                .SS5 {background:#f5f6f8}
+                .Star{width: 18px;}
+
+                #Depoimentos{padding: 20px;}
+
+                .Inspr      {padding: 20px;}
+                .Inspr > div{flex-wrap: nowrap; overflow-x: scroll; width: 100%;}
+                .inspppp img{height: 150px;width: 250px; border-radius: 20px; padding: 5px;}
             </style>
+
             <div class="SS1 bkggg Start">
                 <div class="Title Start2">
                     <p class="g">NUVINIL</p>
@@ -149,24 +179,34 @@
                 </div>
             </div>
 
-            <div class="Cl w100 Pddn-Y Gap" style="background:#f5f6f8">
-                <style>.Star{width: 18px;}</style>
+            <div class="SS3 Bt">
+                <div class="Prods w50 h100 Cl"></div>
+                <div class="Inspr w50 h100 Cl"></div>
+            </div>
+
+            <div class="SS4">
+                
+            </div>
+
+            <div class="SS5 Cl w100 Pddn-Y Gap">
                 <div class="Cl Gap"><h2>DEPOIMENTOS</h2><h1 class="Blk">O que nossos clientes dizem</h1></div>
                 <div id="Depoimentos" class="Rw Gap w90 Mg"></div>
                 <script>
-                    Inn($("#Depoimentos"),J.DPIM.map(d=> `
-                    <article class="Start2 Gap w30 Pddn-XY Rd Shdw Blk" style="background:#fff;min-width:280px">
-                        <div class="Bt Gap w100">
-                            <img src="./TINTAS/${d.img}.webp" class="RD WH40" alt="${d.nome}">
-                            <div class="Start2">
-                                <div class="B">${d.nome}</div>
-                                <div style="color:gray">á 5 Dias Atrás</div>
+                    function Depoim(){
+                        Inn($("#Depoimentos"),J.DPIM.map(d=> `
+                        <article class="Start2 Gap w30 Pddn-XY Rd Shdw Blk" style="background:#fff;min-width:280px">
+                            <div class="Bt Gap w100">
+                                <img src="./Banco/${d.img}.webp" class="RD WH40" alt="${d.nome}">
+                                <div class="Start2">
+                                    <div class="B">${d.nome}</div>
+                                    <div style="color:gray">á 5 Dias Atrás</div>
+                                </div>
+                                <img src="./Imgs/google.webp" class="WH15" title="Avaliação Google">
                             </div>
-                            <img src="./Imgs/google.webp" class="WH15" title="Avaliação Google">
-                        </div>
-                        <div class="Ct gap">${For(d.Star).map(e=>`<img class="Star" src="./Imgs/Estrela.svg">`).join('')}</div>
-                        <p>${d.Txt}</p>
-                    </article>`).join(""))
+                            <div class="Ct gap">${For(d.star).map(e=>`<img class="Star" src="./Imgs/Estrela.svg">`).join('')}</div>
+                            <p>${d.txt}</p>
+                        </article>`).join(""))
+                    }
                 </script>
             </div>
 
@@ -233,19 +273,25 @@
             <h2 class="title">Nossos Produtos</h2>
             <div id="Div-Prod"></div>
             <script>
-                function Tm_PROD(){
-                    Inn($('#Div-Prod'),J.PROD.map(e=>`
-                        <div class="product">
-                        <img class="Hov" src="./TINTAS/${e.Img}">
-                        <div class="info Start2">
-                            <h3>${e.Nome}</h3>
-                            <div class="price">${RS(e.Valr)}</div>
-                            <p>${e.Desc}</p>
-                            <div class="Ct gap"><button class="Hov">Ver mais</button><button class="Hov">Adicionar ao Carrinho</button></div>
+
+                const Tm_Prod=e=>`
+                        <div class="product Cl">
+                            <div class="Ct">
+                                <img class="Hov" src="./Banco/${e.Img}">
+                                <div class="info Start2">
+                                    <h3>${e.Nome}</h3>
+                                    <div class="price">${RS(e.Valr)}</div>
+                                    <p>${e.Desc}</p>
+                                    <div class="btnIn Ct gap"><button class="Hov">Ver mais</button><button class="Hov">Adicionar ao Carrinho</button></div>
+                                </div>
                             </div>
-                            </div>
-                    `).join(''))
+                            <div class="btnFora Ct gap"><button class="Hov" onclick="ChamaMod('${e.Id}')">Ver mais</button></div>
+                        </div>`
+
+                function ChamaMod(Id){
+                    MODAL(Tm_Prod(JJ['PROD'][Id]))
                 }
+                
             </script>
         </section>
 
@@ -306,12 +352,21 @@
 </script>
 
 <script>
+    function gotoxx(){
+        Inn($('.Inspr'),`<h2>Galeria de Inspiração</h2><div class="Start">${For(5).map(e=>`<div class="inspppp"><img src="./Banco/Inspira (${e+1}).webp"></div>`).join('')}</div><button>Ver mais idéias.</button>`)
+    }
+    gotoxx()
+</script>
+
+<script>
     Onloads('body')
     const getSBPromise = SB_Get(supaBASE,['DPIM','PROD','IMGS'])
 
     function PosGET(){
-        Tm_PROD()
+        Inn($('#Div-Prod'),J.PROD.map(e=>Tm_Prod(e)).join(''))
+        Inn($('.Prods'   ),`<h2>Galeria de Inspiração</h2><div class="Start">${J.PROD.map(e=>Tm_Prod(e)).join('')}</div>`)
         loadtmtable('PROD')
+        Depoim()
     }
 
     function EditCell(e,vall=null){
