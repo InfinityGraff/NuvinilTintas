@@ -87,14 +87,14 @@
 
 <body class="Cl">
     <header class="w100 Bt Fx">
-        <div><img class="Logo PT" src="./TINTAS/Logo.webp" onclick="Nav('Home')"></div>
+        <div><img class="Logo PT" src="./Imgs/Logo.webp" onclick="Nav('Home')"></div>
         <div class="w50"><input class="w80" type="text" placeholder="Pesquisar..."></div>
         <nav class="Ct Gap">
             <a data-Nav="Home" class="Hov PT Atv" onclick="Nav('Home')">Início  </a>
             <a data-Nav="Prod" class="Hov PT"     onclick="Nav('Prod')">Produtos</a>
             <a data-Nav="Sprt" class="Hov PT"     onclick="Nav('Sprt')">Suporte </a>
             <a data-Nav="Admn" class="Hov PT"     onclick="Nav('Admn')">ADM     </a>
-            <a data-Nav="Carr" class="Hov PT"     onclick="Nav('Carr')"><img src="./TINTAS/Carrinho.svg"></a>
+            <a data-Nav="Carr" class="Hov PT"     onclick="Nav('Carr')"><img src="./Imgs/Carrinho.svg"></a>
             <script>const Nav=b=>{Add_N($$('.page'),'Atv');Rmv($$('nav a'),'Atv');Rmv_N($(`section#${b}`),'Atv');Add($(`nav a[data-nav='${b}']`),'Atv')};</script>
         </nav>
     </header>
@@ -162,9 +162,9 @@
                                 <div class="B">${d.nome}</div>
                                 <div style="color:gray">á 5 Dias Atrás</div>
                             </div>
-                            <img src="./TINTAS/google.webp" class="WH15" title="Avaliação Google">
+                            <img src="./Imgs/google.webp" class="WH15" title="Avaliação Google">
                         </div>
-                        <div class="Ct gap">${For(d.Star).map(e=>`<img class="Star" src="./TINTAS/Estrela.svg">`).join('')}</div>
+                        <div class="Ct gap">${For(d.Star).map(e=>`<img class="Star" src="./Imgs/Estrela.svg">`).join('')}</div>
                         <p>${d.Txt}</p>
                     </article>`).join(""))
                 </script>
@@ -175,9 +175,9 @@
                     <h1>Entre em contato ou faça uma visita a nossa Loja</h1>
                     <style>.Coluninha img{width: 20px}</style>
                     <div class="Coluninha Start2 Gap">
-                        <span class="Ct gap"><img src="./TINTAS/Zap.webp"> (11) 96714-1923  -  Televendas</span>
-                        <span class="Ct gap"><img src="./TINTAS/Zap.webp"> (11) 94906-6656  -  Assistência técnica</span>
-                        <span class="Ct gap"><img src="./TINTAS/Insta.webp"> @decorcolors.oficial</span>
+                        <span class="Ct gap"><img src="./Imgs/Zap.svg"> (11) 96714-1923  -  Televendas</span>
+                        <span class="Ct gap"><img src="./Imgs/Zap.svg"> (11) 94906-6656  -  Assistência técnica</span>
+                        <span class="Ct gap"><img src="./Imgs/Insta.svg"> @decorcolors.oficial</span>
                         <span>Horário de segunda a sexta das 8 as 16 hrs</span>
                         <span>Endereço: Av Pedro Mendes 2478 Bairro montanhão Cidade: São Bernardo do Campo</span>
                     </div>
@@ -220,7 +220,7 @@
             <div class="Ct w100 Pddn-Y Gap"> <!--FOOTER-->
                 <div class="Cl Gap">
                     <span>Formas de pagamento</span>
-                    <img src="./TINTAS/Cartão.webp" width="200px">
+                    <img src="./Imgs/Cartão.webp" width="200px">
                 </div>
                 <div class="Cl Gap">
                     <span>© 2026 - Todos os direitos reservados</span>
