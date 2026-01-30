@@ -7,9 +7,8 @@
     <link  href="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/fontes.css"        rel="stylesheet">
     <link  href="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/CSSBiblioteca.css" rel="stylesheet">
     <script src="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/PreScript.js"      ></script>
-    <script src="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/SB_Crud.js"></script>
-
-    <!--<script src="../MyBiblioteca/SB_Crud.js"      ></script>-->
+    <!-- <script src="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/SB_Crud.js"        ></script> -->
+    <script src="../MyBiblioteca/SB_Crud.js"      ></script>
 </head>
 
 <script>// Configuração do SupaBase
@@ -30,37 +29,28 @@
         --C1:#2b2f35;
         --C2:radial-gradient(circle at center, rgba(255,255,255,.05), rgba(0,0,0,.7)),linear-gradient(rgba(47,50,54,.8), rgba(47,50,54,.8)), center / cover no-repeat fixed
     }
-
-    body     {background:var(--C2);color:#fff}
-    header   {height:100px ; background:var(--C1); padding:20px 40px; z-index:3}
-    main     {margin-top:100px}
+    body        {background:var(--C2);color:#fff}
+    header      {height:100px ; background:var(--C1); padding:20px 40px; z-index:3}
     
-
-    .Logo    {width:200px}
+    
+    
+    button      {transition:all 0.2s ease-in-out ; display: flex; align-items: center; justify-content: center; gap: 5px; color:#fff ; border-radius:8px; ; cursor:pointer ; padding: 6px; height: 35px;}
+    button:hover{transform: scale(1.05)}
+    button svg  {width: 20px; fill: white;}
+    main        {margin-top:100px}
+    .Logo       {width:200px}
     nav a    {background:none; border:0; color:#cccccc; font-size: 20px;}
     nav a.Atv{color:#ffffff; border-bottom:3px solid #ffd400}
     nav a img{width: 25px; height: 25px;}
-    input    {height:30px;border-radius: 255px;background: #3f424c;border: 1px solid #71737b; font-size: 15px}
-
-    
-
+    input    {height:30px;border-radius: 255px;background: #3f424c;border: 1px solid #71737b; font-size: 15px}  
     .actions { margin-top:30px; }
     .actions button { padding:14px 24px; margin-right:15px; background:#2b2d31; color:#fff; border:0; border-radius:8px; cursor:pointer; }
-
     footer { position:fixed; right:30px; bottom:20px; background:#ffd400; color:#000; padding:12px 20px; border-radius:30px; }
     #produtos { padding:40px 60px; }
     #produtos .title { text-align:center; font-size:36px; margin-bottom:40px; }
     #Div-Prod { display:grid; grid-template-columns:repeat(2,1fr); gap:30px;  padding: 60px;}
-
-    .product       {background:rgba(255,255,255,.08); border-radius:16px; padding:24px; display:flex; gap:20px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.08); }
-    .product img   {width:105px; height: 130px; flex-shrink:0}
-    .product .info {flex:1; }
-    .product h3    {font-size:20px; }
-    .product .price{font-size:20px; color:#ffd400; font-weight:bold;}
-    .product p     {font-size:14px; line-height:1.4; opacity:0.9}
-    .product button{padding:10px 18px; background:#2b2d31; border:none; border-radius:8px; color:#fff; cursor:pointer; }
-
     #DivTableADM{padding: 60px;}
+
     table{border-collapse:collapse;background:#2f3236;color:#fff;font-size:14px}
     th{background:#1f2226;text-transform:uppercase;font-weight:600;padding:10px;border-bottom:2px solid #3a3d42}
     td{padding:6px;border-bottom:1px solid #3a3d42}
@@ -68,13 +58,13 @@
     table p{margin:0;padding:6px 8px;min-height:22px;outline:none;border-radius:4px;cursor:text}
     table p:hover{background:rgba(255,255,255,.05)}
     table p:focus{background:#2563eb;color:#fff}
-    td.Foco{background:#3b82f6}
+    td.Foco  {background:#3b82f6}
     td.Foco p{background:#2563eb;color:#fff}
+    table td:nth-child(5) img {width: 30px;}
 
-
-    .FModal{position:fixed;top:0px; left:0px;width:100%;height:100%;z-index:999;background:#00000046;backdrop-filter:blur(10px);animation:FModal 0.5s}
-    .FModal > *{padding:15px; box-shadow: 10px 10px 20px black;animation: modal 0.5s}
-    .FModal > *{background:#1b1b1b}
+    .FModal  {position:fixed;top:0px; left:0px;width:100%;height:100%;z-index:999;background:#00000046;backdrop-filter:blur(10px);animation:FModal 0.5s}
+    .FModal>*{padding:15px; box-shadow: 10px 10px 20px black;animation: modal 0.5s}
+    .FModal>*{background:#1b1b1b}
 </style>
 
 <script> // BASE DE DADOS
@@ -85,10 +75,50 @@
 
     const CRYPP  = {F:'Fixo',E:'Edit',D:'Data',V:'Valr',S:'Slct',C:'Chek',M:'Imgs',Z:'Mdds',B:'Bndj',    A:'Auto',O:'Soma',X:'Lixo',W:'Ssvg',Y:'Sync',K:'Link',G:'Fixy'}
     const BS = { // ['1º é Forma de Carregar', '2º são as Classes CSS // Pode ter um Terceiro q deva ter algo aver com AutoComp
-        PROD:{Id:['F','I'],Nome:['E','' ],Valr:['E','' ],Desc:['E','' ],Img:['E','' ],Lixo:['X','' ]},
+        PROD:{Id:['F','I'],Nome:['E','' ],Valr:['V','' ],Desc:['E','' ],Img:['M','','Tinta-'],Lixo:['X','' ]},
     }
 
+    const SVVG = {
+        Carr:`<svg class="HOV PT" viewBox="0 0 376.77 376.79"><path d="M263.52 309.36c0,-25.93 39.39,-27.87 39.39,1.23 0,23.07 -39.39,24.82 -39.39,-1.23zm-103.75 -20.2c16.34,0 27.08,20.54 13.73,33.93 -11.94,11.98 -33.25,3.97 -33.5,-14.02 -0.15,-11.06 9.06,-19.92 19.77,-19.92zm-158.05 -255.93c0,6.83 3.12,12.85 9.02,15.85 5.59,2.84 8.78,1.88 14.86,1.88l24.85 -0.24c3.16,-0.01 2.38,-2.48 5.35,11.64l17.44 75.17c5.68,22.38 12.15,52.03 17.44,75.17 5.1,22.32 8.91,58.48 34.37,58.48 -2.27,3.39 -5.81,4.48 -11.24,15.35 -24,48.02 34.34,95.07 76.31,63.54 24.62,-18.49 28.87,-52.81 4.61,-78.4l53.52 0c-0.57,0.85 -0.48,0.45 -1.16,1.06 -32.3,30.66 -8.69,87.37 34.15,87.37 49.86,0 67.83,-55.35 40.31,-84.92l-3.13 -3.51c7.92,0 16.35,0.92 22,-1.89 15.37,-7.65 10.41,-32.35 -7.96,-32.35l-200.51 0c-0.03,-1.19 -4.65,-19.61 -5.17,-20.69 58.8,0 89.4,-2.59 148.15,-2.46 12.66,0.03 37.69,0.5 47.08,-5.37 8.57,-5.36 11.9,-14.79 15.46,-23.7 6.35,-16.26 26.57,-67.89 32.35,-85.38 6.72,-20.35 9.85,-32.94 -8.81,-46.8 -7.43,-4.89 -19.44,-5.27 -31.66,-5.27l-152.34 0.49c-27.45,0 -24.47,29.42 -7.54,33.65 5.56,1.39 148.44,0.09 169.97,0.09 -0.17,2.04 -35.55,93.63 -36.69,98.53 -66.91,0 -101.88,1.13 -168.83,1.72 -17.37,0.1 -14.41,2.28 -15.94,-4.74l-20.5 -91.57c-6.98,-29.53 -9.54,-69.48 -43.47,-69.46 -13.19,0.01 -16.02,0.25 -29.14,0.25 -11.5,0 -23.14,3.05 -23.14,16.5z"/></svg>`,
+        Laps:`<svg class="HOV PT" viewBox="0 0 293.58 365.77"><path d="M17.84 364.21c-9.18,5.15 -20.07,-3.22 -17.44,-13.41 5.24,-20.33 10.74,-40.74 15.75,-61.1 0.8,-3.25 1.52,-12.1 5.83,-11.78 3.1,0.23 8.83,5.89 11.81,8.29l43.12 34.51c10.42,7.94 1.85,9.27 -11.72,16.9l-47.35 26.58zm205.82 -349.39c12.78,-16.59 36.81,-19.74 53.4,-6.96l1.7 1.3c16.59,12.78 19.74,36.81 6.96,53.4l-18 23.4c-2.89,3.74 -8.26,4.44 -12,1.56l-48.51 -37.33c-3.74,-2.89 -4.44,-8.26 -1.56,-12l18 -23.4 0 0.04zm-45.22 54.79c4.04,-5.22 11.55,-6.22 16.78,-2.18l45.7 35.18c5.22,4.04 6.22,11.55 2.18,16.78l-137.08 178.14c-8.88,11.6 -7.44,11.61 -18.3,2.8 -14.26,-11.55 -28.59,-23.34 -43.05,-34.61 -2.73,-2.12 -9.23,-5.68 -9.08,-9.23 0.13,-2.99 5.25,-8.08 7.29,-10.68l105.23 -136.76 30.34 -39.43z"/></svg>`,
+    }
+
+</script>
+
+<script>
     const Tm_thSort=(arr,Typ)=>arr.map(e=>`<th>${e}</th>`).join('')
+
+    const Tm_R=(e,x,Typ,id)=>{const k=OjKy(Typ)[x] ; return `${Typ}-${e==='Foot'?'Foot':e[isArr(e)?0:id]}-${k}-${CRYPP[BS[Typ][k][0]]}`}
+    const GBRR=e=>['SERV','PGMT'].includes(e)
+
+    function ConvertR(R,Rpai){//(GAMBIARRA) // TYP - Row - Col - Tm - Bandeija ou Fora - Secundario //(GAMBIARRA)
+        const E = R.split('-')
+        return `${E[0]}-${E[1]}-${E[2]}-${E[3]}-${Rpai?'Bj':'_'}-${GBRR(E[0])?'Sc':'_'}`
+    }
+    function ConvertP(R,Rpai){//(GAMBIARRA) // TYP - Row - Col - Tm - Bandeija ou Fora - Secundario //(GAMBIARRA)
+        if(Rpai==''){const EE = R.split('-') ; if(GBRR(EE[0])){return DescobrePai(EE)}else{return 'SemPai'}}
+        const E = Rpai.split('-')
+        return `${E[0]}-${E[1]}-${E[2]}-${E[3]}-_-${GBRR(E[0])?'Sc':'_'}`
+    }
+
+    function Tm_Td(v,e,x,Typ,RPai=''){
+        const r = Tm_R(e,x,Typ,'Id') ; const _R = ConvertR(r,RPai) ; const _P = ConvertP(r,RPai)
+        return `<td>${Tm_Tm2[d_r(_R).Tm](v,_R,_P)}</td>`
+    }
+
+    function Tm_Td_Prod_ADM(v,e,x,Typ,RPai=''){
+        const r = Tm_R(e,x,Typ,'Id') ; const _R = ConvertR(r,RPai) ; const _P = ConvertP(r,RPai)
+        return Tm_Tm2[d_r(_R).Tm](v,_R,_P)
+    }
+
+    const SrcsIMG=(e,R)=>{
+        //if(typeof e==='boolean'){return ''}
+        if(e.includes('blob:')){return e} // quando eu Acabei de Importar! ela vem assim!
+        const Past = 'Img'                // (Depois trocar de Pasta pra pegar versão Thumb)
+        const Src  = e ; return Src ? `${BASE_URL}${Past}/${Src}` : `./SVG/Upload.svg`
+    }
+
+
 </script>
 
 <body class="Cl">
@@ -123,15 +153,7 @@
 
                 .SS3 {height: 230px; background:#f5f6f8; padding: 0px 50px ;}
                 .SS3 > .Prods > div{width: 100%;gap: 15px; overflow-x: scroll; flex-wrap: nowrap !important; color: black !important;}
-                .Prods                {gap: 10px;}
-                .Prods .product       {height: 180px; width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,.3); padding: 5px; gap: 0;}
-                .Prods .product > div {flex-wrap: nowrap !important; width: 200px;}
-                .Prods .product h3    {font-size:15px}
-                .Prods .product .price{font-size:15px}
-                .Prods .product p     {font-size:9px}
-                .btnFora{display: none;}
-                .Prods .btnIn{display: none;}
-                .Prods .btnFora{display: flex;}
+
 
                 .SS4 {height: 500px;}
 
@@ -182,6 +204,9 @@
             <div class="SS3 Bt">
                 <div class="Prods w50 h100 Cl"></div>
                 <div class="Inspr w50 h100 Cl"></div>
+                <script>
+                    function Inspirasse(){Inn($('.Inspr'),`<h2>Galeria de Inspiração</h2><div class="Start">${For(5).map(e=>`<div class="inspppp"><img src="./Banco/Inspira (${e+1}).webp"></div>`).join('')}</div><button>Ver mais idéias.</button>`)}
+                </script>
             </div>
 
             <div class="SS4">
@@ -189,7 +214,7 @@
             </div>
 
             <div class="SS5 Cl w100 Pddn-Y Gap">
-                <div class="Cl Gap"><h2>DEPOIMENTOS</h2><h1 class="Blk">O que nossos clientes dizem</h1></div>
+                <div class="Cl Gap"><h2>DEPOIMENTOS</h2><h1 class="Blk">O que nossos clientes dizem sobre nós!</h1></div>
                 <div id="Depoimentos" class="Rw Gap w90 Mg"></div>
                 <script>
                     function Depoim(){
@@ -272,23 +297,62 @@
         <section id="Prod" class="page none w100">
             <h2 class="title">Nossos Produtos</h2>
             <div id="Div-Prod"></div>
-            <script>
+            <style>
+                .Prods                {gap: 10px;}
+                .Prods .product       {height: 180px; width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,.3); padding: 5px; gap: 0;}
+                .Prods .product > div {flex-wrap: nowrap !important; width: 200px;}
+                .Prods .product .prd-1 .P-P{font-size:15px}
+                .Prods .product .prd-2 .P-P{font-size:15px}
+                .Prods .product .prd-3 .P-P{font-size:9px}
+                .btnFora{display: none;}
+                .Prods .btnIn{display: none;}
+                .Prods .btnFora{display: flex;}
 
+                .product .info div> a{position:absolute; width:20px; fill:#ffffff70 ; right: -25px;top: 0px;}
+                .product             {background:#ffffff14; border-radius:16px; padding:24px; box-shadow:inset 0 0 0 1px #ffffff14}
+                .product img         {width:105px; height: 130px; flex-shrink:0}
+                .product .prd-1 .P-P {font-size:20px}
+                .product .prd-2 .P-P {font-size:20px; color:#ffd400; font-weight:bold}
+                .product .prd-3 .P-P {font-size:14px ; text-align: start;}
+                .product .P-P        {border: 1px solid #ffffff33}
+                .product .P-P.Atv    {background: #ffffff25}
+                .product button      {background:#2b2d31}
+            </style>
+            <script>
                 const Tm_Prod=e=>`
-                        <div class="product Cl">
-                            <div class="Ct">
-                                <img class="Hov" src="./Banco/${e.Img}">
-                                <div class="info Start2">
-                                    <h3>${e.Nome}</h3>
-                                    <div class="price">${RS(e.Valr)}</div>
-                                    <p>${e.Desc}</p>
-                                    <div class="btnIn Ct gap"><button class="Hov">Ver mais</button><button class="Hov">Adicionar ao Carrinho</button></div>
+                    <div class="product Cl">
+                        <div class="Ct">
+                            <img class="Hov" src="./Banco/${e.Img}">
+                            <div class="info Start2">
+                                <h3>${e.Nome}</h3>
+                                <div class="price">${RS(e.Valr)}</div>
+                                <p>${e.Desc}</p>
+                                <div class="btnIn Ct gap"><button class="Hov">Ver mais</button><button class="Hov">Adicionar ao Carrinho</button></div>
+                            </div>
+                        </div>
+                        <div class="btnFora Ct gap"><button class="Hov" onclick="ModalProd('${e.Id}')">Ver mais</button></div>
+                    </div>`
+
+
+                function Tm_Prod_ADM(Typ,arry,Rpai=''){
+                    const IN = performance.now()
+                    const Retorno = arry.map(e=> e ? `<div class="product Cl tr-${e[Primary[Typ]]}">
+                            <div class="Ct Wrp Gap">
+                                ${Tm_Td_Prod_ADM(e.Img,e,4,Typ)}
+                                <div class="info Start2 Gap">
+                                    <div class="Rltv prd-1">${Tm_Td_Prod_ADM(e.Nome,e,1,Typ)}<a>${SVVG.Laps}</a></div>
+                                    <div class="Rltv prd-2">${Tm_Td_Prod_ADM(e.Valr,e,2,Typ)}<a>${SVVG.Laps}</a></div>
+                                    <div class="Rltv prd-3">${Tm_Td_Prod_ADM(e.Desc,e,3,Typ)}<a>${SVVG.Laps}</a></div>
+                                    <div class="btnIn Ct gap"><button>Ver mais</button><button>${SVVG.Carr}Adicionar ao Carrinho</button></div>
                                 </div>
                             </div>
-                            <div class="btnFora Ct gap"><button class="Hov" onclick="ChamaMod('${e.Id}')">Ver mais</button></div>
-                        </div>`
+                            <div class="btnFora Ct gap"><button class="Hov" onclick="ModalProd('${e.Id}')">Ver mais</button></div>                            
+                        </div>` : '').join('')
+                        LOG(`⏱️🔴 Tm_Prod_ADM(${Typ}): ${MS(IN)}`)
+                    return Retorno
+                }
 
-                function ChamaMod(Id){
+                function ModalProd(Id){
                     MODAL(Tm_Prod(JJ['PROD'][Id]))
                 }
                 
@@ -328,51 +392,23 @@
 </body>
 
 <script>
-    const Tm_R=(e,x,Typ,id)=>{const k=OjKy(Typ)[x] ; return `${Typ}-${e==='Foot'?'Foot':e[isArr(e)?0:id]}-${k}-${CRYPP[BS[Typ][k][0]]}`}
-    const GBRR=e=>['SERV','PGMT'].includes(e)
+    function loadtmtable(Typ){Inn($('#H_PROD tbody'),Tm_Table(Typ,J[Typ]))}
 
-    function ConvertR(R,Rpai){//(GAMBIARRA) // TYP - Row - Col - Tm - Bandeija ou Fora - Secundario //(GAMBIARRA)
-        const E = R.split('-')
-        return `${E[0]}-${E[1]}-${E[2]}-${E[3]}-${Rpai?'Bj':'_'}-${GBRR(E[0])?'Sc':'_'}`
-    }
-    function ConvertP(R,Rpai){//(GAMBIARRA) // TYP - Row - Col - Tm - Bandeija ou Fora - Secundario //(GAMBIARRA)
-        if(Rpai==''){const EE = R.split('-') ; if(GBRR(EE[0])){return DescobrePai(EE)}else{return 'SemPai'}}
-        const E = Rpai.split('-')
-        return `${E[0]}-${E[1]}-${E[2]}-${E[3]}-_-${GBRR(E[0])?'Sc':'_'}`
-    }
-
-    function Tm_Td(v,e,x,Typ,RPai=''){
-        const r = Tm_R(e,x,Typ,'Id') ; const _R = ConvertR(r,RPai) ; const _P = ConvertP(r,RPai) ; const R = d_r(_R)
-        return `<td data-R="${_R}" data-P="${_P}" class="Rltv"><div class="Ct">${Tm_Tm[R.Tm](v,R)}</div></td>` // Colocar as Bndj dentro disso
-    }
-
-    function loadtmtable(Typ){
-       Inn($('#H_PROD tbody'),Tm_Table(Typ,J[Typ]))
-    }
-</script>
-
-<script>
-    function gotoxx(){
-        Inn($('.Inspr'),`<h2>Galeria de Inspiração</h2><div class="Start">${For(5).map(e=>`<div class="inspppp"><img src="./Banco/Inspira (${e+1}).webp"></div>`).join('')}</div><button>Ver mais idéias.</button>`)
-    }
-    gotoxx()
-</script>
-
-<script>
     Onloads('body')
     const getSBPromise = SB_Get(supaBASE,['DPIM','PROD','IMGS'])
 
     function PosGET(){
-        Inn($('#Div-Prod'),J.PROD.map(e=>Tm_Prod(e)).join(''))
+        //Inn($('#Div-Prod'),J.PROD.map(e=>Tm_Prod(e)).join(''))
+        Inn($('#Div-Prod'),Tm_Prod_ADM('PROD',J.PROD))
         Inn($('.Prods'   ),`<h2>Galeria de Inspiração</h2><div class="Start">${J.PROD.map(e=>Tm_Prod(e)).join('')}</div>`)
         loadtmtable('PROD')
         Depoim()
+        Inspirasse()
     }
 
     function EditCell(e,vall=null){
-        const R = d_r(e)
-        const V  = vall==""?"":vall||VAL(e) ; // if(V==Nm(e) || Nm(e)=='False'){return}
-        LOG(e,VAL(e))
+        const R = d_r2(e)
+        const V  = vall==""?"":vall||VAL2(e) ; if(V==Nm(e) || Nm(e)=='False'){return}
         Sb_EDIT(supaBASE,...[R.Ty,R.Id,R.Cl,V])
     }
 
@@ -388,6 +424,25 @@
         /*Sub*/ if(!SB){Sb_CREATE(supaBASE,Typ,Arry)}
         if(SB){LOG('Linha Adicionada pelo SB')}
         if(Typ=='CLNT'){Linkar(inpt,Def.Id)} // Parece q isso serve pra levar o nome do cliente pra T-T assim q adiciona
+    }
+
+    function DarVAL_src(e,Src){
+       e.src = Src 
+    }
+    const $r=(...arr)=>{const K=arr.filter(v=>v!=null&&v!=="").join('-') ; return K ? $(`[data-r="${K}"]`) : null}
+
+
+    function ImgUPP(Inpt,Nome,R){             // ⭐⭐⭐_ _  analisando com calma
+        LOG('mermao',R)
+        const _R = d_r(R)
+        const f = Inpt.files[0]               // pega o único arquivo
+        const Src  = URL.createObjectURL(f)   // src temporário
+        const img  = $r(R)                    // Procura a Imagem 
+        J['IMGS'][Nome] = f.name              // Adiciona ela no Objeto
+        //JJ['IMGS'][Nome] = f.name           // deveria aplicar em JJ também ou usar DarJJ()
+        DarVAL_src(img,Src)
+        Sb_EDIT(supaBASE,_R.Ty,_R.Id,_R.Cl,Nome)
+        Sb_UPLOAD(supaBASE,f,`Img/${Nome}`)
     }
 
 </script>
