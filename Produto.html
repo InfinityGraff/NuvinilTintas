@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Nuvinil</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link  href="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/fontes.css"        rel="stylesheet">
+    <link  href="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/CSSBiblioteca.css" rel="stylesheet">
+    <script src="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/PreScript.js"      ></script>
+    <!--
+    <script src="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/SB_Crud.js"        ></script>
+    <link href="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/SB_Crud.js">-->
+    
+    <link href="../MyBiblioteca/SB_Crud.css" rel="stylesheet">
+    <script src="../MyBiblioteca/SB_Crud.js"      ></script>
+    <script src="./BS.js"></script>
+  </head>
+
+<body>
+<h3 id="nome"></h3>
+
+<script>
+  const Id = new URLSearchParams(location.search).get('id')
+  LOG(JJ['PROD'])
+  Inn($('#nome'),JJ['PROD'][`${Id}`].Nome)
+</script>
+
+</body>
+</html>
