@@ -7,8 +7,12 @@
     <link  href="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/fontes.css"        rel="stylesheet">
     <link  href="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/CSSBiblioteca.css" rel="stylesheet">
     <script src="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/PreScript.js"      ></script>
+
     <script src="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/SB_Crud.js"        ></script>
-    <!--<script src="../MyBiblioteca/SB_Crud.js"      ></script>-->
+    <link href="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/SB_Crud.js">
+    
+    <!--<link href="../MyBiblioteca/SB_Crud.css" rel="stylesheet">
+    <script src="../MyBiblioteca/SB_Crud.js"      ></script>-->
 </head>
 
 <script>// Configuração do SupaBase
@@ -72,10 +76,12 @@
     const JJ= {DPIM:[],PROD:[],IMGS:[]} // deve ser Criada pelo GetSB
     const Primary = {DPIM:'Id',PROD:'Id',PROD:'Id'} // deve ser Armazenado lá em BS
     const BnddJ=[] // as que possuem bndj como ['SERV','PGMT'] // mais isso vai ser importado automárico
+    const Secund = {}
 
+    const CRYCLS = {A:'AutoComp',I:'CorID'}
     const CRYPP  = {F:'Fixo',E:'Edit',D:'Data',V:'Valr',S:'Slct',C:'Chek',M:'Imgs',Z:'Mdds',B:'Bndj',    A:'Auto',O:'Soma',X:'Lixo',W:'Ssvg',Y:'Sync',K:'Link',G:'Fixy'}
     const BS = { // ['1º é Forma de Carregar', '2º são as Classes CSS // Pode ter um Terceiro q deva ter algo aver com AutoComp
-        PROD:{Id:['F','I'],Nome:['E','' ],Valr:['V','' ],Desc:['E','' ],Img:['M','','Tinta-'],Lixo:['X','' ]},
+        PROD:{Id:['F','I'],Nome:['E','' ],Valr:['V','' ],Desc:['E','' ],Img:['M','','Tinta_'],Lixo:['X','' ]},
     }
 
     const SVVG = {
@@ -86,39 +92,8 @@
 </script>
 
 <script>
-    const Tm_thSort=(arr,Typ)=>arr.map(e=>`<th>${e}</th>`).join('')
-
-    const Tm_R=(e,x,Typ,id)=>{const k=OjKy(Typ)[x] ; return `${Typ}-${e==='Foot'?'Foot':e[isArr(e)?0:id]}-${k}-${CRYPP[BS[Typ][k][0]]}`}
-    const GBRR=e=>['SERV','PGMT'].includes(e)
-
-    function ConvertR(R,Rpai){//(GAMBIARRA) // TYP - Row - Col - Tm - Bandeija ou Fora - Secundario //(GAMBIARRA)
-        const E = R.split('-')
-        return `${E[0]}-${E[1]}-${E[2]}-${E[3]}-${Rpai?'Bj':'_'}-${GBRR(E[0])?'Sc':'_'}`
-    }
-    function ConvertP(R,Rpai){//(GAMBIARRA) // TYP - Row - Col - Tm - Bandeija ou Fora - Secundario //(GAMBIARRA)
-        if(Rpai==''){const EE = R.split('-') ; if(GBRR(EE[0])){return DescobrePai(EE)}else{return 'SemPai'}}
-        const E = Rpai.split('-')
-        return `${E[0]}-${E[1]}-${E[2]}-${E[3]}-_-${GBRR(E[0])?'Sc':'_'}`
-    }
-
-    function Tm_Td(v,e,x,Typ,RPai=''){
-        const r = Tm_R(e,x,Typ,'Id') ; const _R = ConvertR(r,RPai) ; const _P = ConvertP(r,RPai)
-        return `<td>${Tm_Tm2[d_r(_R).Tm](v,_R,_P)}</td>`
-    }
-
-    function Tm_Td_Prod_ADM(v,e,x,Typ,RPai=''){
-        const r = Tm_R(e,x,Typ,'Id') ; const _R = ConvertR(r,RPai) ; const _P = ConvertP(r,RPai)
-        return Tm_Tm2[d_r(_R).Tm](v,_R,_P)
-    }
-
-    const SrcsIMG=(e,R)=>{
-        //if(typeof e==='boolean'){return ''}
-        if(e.includes('blob:')){return e} // quando eu Acabei de Importar! ela vem assim!
-        const Past = 'Img'                // (Depois trocar de Pasta pra pegar versão Thumb)
-        const Src  = e ; return Src ? `${BASE_URL}${Past}/${Src}` : `./SVG/Upload.svg`
-    }
-
-
+    const Tm_thSort=(arr,Typ)=>arr.map(e=>`<th>${e}</th>`).join('')   
+    
 </script>
 
 <body class="Cl">
@@ -226,7 +201,7 @@
                                     <div class="B">${d.nome}</div>
                                     <div style="color:gray">á 5 Dias Atrás</div>
                                 </div>
-                                <img src="./Imgs/google.webp" class="WH15" title="Avaliação Google">
+                                <img src="./Imgs/google.webp" class="WH15">
                             </div>
                             <div class="Ct gap">${For(d.star).map(e=>`<img class="Star" src="./Imgs/Estrela.svg">`).join('')}</div>
                             <p>${d.txt}</p>
@@ -319,10 +294,10 @@
                 .product button      {background:#2b2d31}
             </style>
             <script>
-                const Tm_Prod=e=>`
+                const Tm_Prod=(Typ,e)=>`
                     <div class="product Cl">
                         <div class="Ct">
-                            <img class="Hov" src="./Banco/${e.Img}">
+                            <img class="Hov" src="${BASE_URL}Med/${e.Img}">
                             <div class="info Start2">
                                 <h3>${e.Nome}</h3>
                                 <div class="price">${RS(e.Valr)}</div>
@@ -333,6 +308,7 @@
                         <div class="btnFora Ct gap"><button class="Hov" onclick="ModalProd('${e.Id}')">Ver mais</button></div>
                     </div>`
 
+                function Tm_Td_Prod_ADM(v,e,x,Typ,_P=''){const _R = Tm_R(e,x,Typ,_P) ; return Tm_Tm[d_r(_R).Tm](v,_R,_P)}
 
                 function Tm_Prod_ADM(Typ,arry,Rpai=''){
                     const IN = performance.now()
@@ -352,9 +328,7 @@
                     return Retorno
                 }
 
-                function ModalProd(Id){
-                    MODAL(Tm_Prod(JJ['PROD'][Id]))
-                }
+                function ModalProd(Id){MODAL(Tm_Prod('PROD',JJ['PROD'][Id]))}
                 
             </script>
         </section>
@@ -398,17 +372,17 @@
     const getSBPromise = SB_Get(supaBASE,['DPIM','PROD','IMGS'])
 
     function PosGET(){
-        //Inn($('#Div-Prod'),J.PROD.map(e=>Tm_Prod(e)).join(''))
+        //Inn($('#Div-Prod'),J.PROD.map(e=>Tm_Prod('PROD',e)).join(''))
         Inn($('#Div-Prod'),Tm_Prod_ADM('PROD',J.PROD))
-        Inn($('.Prods'   ),`<h2>Galeria de Inspiração</h2><div class="Start">${J.PROD.map(e=>Tm_Prod(e)).join('')}</div>`)
+        Inn($('.Prods'   ),`<h2>Galeria de Inspiração</h2><div class="Start">${J.PROD.map(e=>Tm_Prod('PROD',e)).join('')}</div>`)
         loadtmtable('PROD')
         Depoim()
         Inspirasse()
     }
 
-    function EditCell(e,vall=null){
-        const R = d_r2(e)
-        const V  = vall==""?"":vall||VAL2(e) ; if(V==Nm(e) || Nm(e)=='False'){return}
+    function EditCell(e,Mod,vall=null){ // ⭐ ta OK
+        const R = d_r(e)
+        const V  = vall==""?"":vall||VAL(e) ; if(V==Nm(e)){return}
         Sb_EDIT(supaBASE,...[R.Ty,R.Id,R.Cl,V])
     }
 
@@ -429,21 +403,9 @@
     function DarVAL_src(e,Src){
        e.src = Src 
     }
-    const $r=(...arr)=>{const K=arr.filter(v=>v!=null&&v!=="").join('-') ; return K ? $(`[data-r="${K}"]`) : null}
 
 
-    function ImgUPP(Inpt,Nome,R){             // ⭐⭐⭐_ _  analisando com calma
-        LOG('mermao',R)
-        const _R = d_r(R)
-        const f = Inpt.files[0]               // pega o único arquivo
-        const Src  = URL.createObjectURL(f)   // src temporário
-        const img  = $r(R)                    // Procura a Imagem 
-        J['IMGS'][Nome] = f.name              // Adiciona ela no Objeto
-        //JJ['IMGS'][Nome] = f.name           // deveria aplicar em JJ também ou usar DarJJ()
-        DarVAL_src(img,Src)
-        Sb_EDIT(supaBASE,_R.Ty,_R.Id,_R.Cl,Nome)
-        Sb_UPLOAD(supaBASE,f,`Img/${Nome}`)
-    }
+
 
 </script>
 
