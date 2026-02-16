@@ -415,19 +415,7 @@
         Sb_EDIT(supaBASE,...[R.Ty,R.Id,R.Cl,V])
     }
 
-    function AddROW(Typ,Ps,obj={},inpt,SB){ // ⭐⭐⭐⭐_ (Adicionar um OBJ se tiver!)
-        const Def   = ClrObj(BS[Typ])        // Cria um Default Baseado na bndj
-        const Tbody = $(`#H_${Typ} > tbody`)
-        Def.Id = NewID(J[Typ])                // Atribuindo Novo Id
-        ObjKey(obj).forEach(k=>Def[k]=obj[k]) // Atribuindo oq vem no Objeto doa argumento!
-        const Clone = Tm_Table(Typ,[Def])
-        const Arry = {Id:`${Def.Id}`} // devem vir seus respectivos Objetos de base já no argumento
-        /*DOM*/ Ps == "<" ? After(Tbody,Clone) : Befor(Tbody,Clone)
-        /*Obj*/ DarJJ('Add',Typ,Def.Id,null,Def)
-        /*Sub*/ if(!SB){Sb_CREATE(supaBASE,Typ,Arry)}
-        if(SB){LOG('Linha Adicionada pelo SB')}
-        if(Typ=='CLNT'){Linkar(inpt,Def.Id)} // Parece q isso serve pra levar o nome do cliente pra T-T assim q adiciona
-    }
+
 
 </script>
 
