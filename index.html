@@ -23,7 +23,7 @@
 
     const J = {DPIM:[],PROD:[],IMGS:[]} // deve ser Criada pelo GetSB
     const JJ= {DPIM:[],PROD:[],IMGS:[]} // deve ser Criada pelo GetSB
-    const Primary = {DPIM:'Id',PROD:'Id',PROD:'Id'} // deve ser Armazenado lá em BS
+    const Pry = {DPIM:'Id',PROD:'Id',PROD:'Id'} // deve ser Armazenado lá em BS
     const BnddJ=[] // as que possuem bndj como ['SERV','PGMT'] // mais isso vai ser importado automárico
     const Secund = {}
 
@@ -139,7 +139,7 @@
             // <a href="Produto.html?id=${e.Id})">Ver mais</a>
             const Btns=e=>`<button onclick="AbrirItem('${e.Id}')">Ver mais</button><button>${SVVG.Carr}Adicionar ao Carrinho</button>`
 
-            const Retorno = arry.map(e=>e?`<div class="tr-${e[Primary[Typ]]} produ noslt Cl ${Mod}">
+            const Retorno = arry.map(e=>e?`<div class="tr-${e[Pry[Typ]]} produ noslt Cl ${Mod}">
                     <a class="prd-5">${Tm_Td_Prod_ADM('',e,10,Typ)}</a>
                     <div class="Ct Wrp Gap">
                         <div class="MaisIMGs Cl Start AMAIS Gap">${Tm_Td_Prod_ADM(e.Img,e,9,Typ)}${Tm_Td_Prod_ADM(e.Img,e,9,Typ)}${Tm_Td_Prod_ADM(e.Img,e,9,Typ)}</div>
