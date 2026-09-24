@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Simulador de Cores - Nuvinil</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link  href="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/fontes.css"        rel="stylesheet">
+    <link  href="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/CSSBiblioteca.css" rel="stylesheet">
+    <script src="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/PreScript.js"      ></script>
+    <script src="./BS.js"></script>
+</head>
+
+<style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#f4f4f4;font:14px Arial;color:#fff}
+
+    /* SIMULADOR */
+    #Simulador{height:500px;background:#292d33;display:flex;overflow:hidden}
+    .SimLeft{width:62%;padding:25px 35px}
+    .SimRight{width:38%;background:#24282e;padding:28px 35px;border-left:1px solid #454a51}
+
+    /* CORES */
+    .Cores{display:flex;gap:8px;margin-bottom:15px}
+    .Cor{width:38px;height:38px;border:2px solid transparent;cursor:pointer;transition:.15s ; border-radius: 10px;}
+    .Cor:hover{transform:translateY(-2px)}
+    .Cor.On{border-color:#fff;box-shadow:0 0 0 2px #ffda00}
+
+    /* AMBIENTE */
+    .Ambiente    {position:relative;flex:1;overflow:hidden;background:#ffff63 ; border-radius: 20px; width: 500px;}
+    .Ambiente img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
+    .AmbCor      {position:absolute;inset:0;background:#ffff63;z-index:1}
+    .AmbInfo     {position:absolute;bottom:10px;left:10px;z-index:4;background:#202329dd;padding:7px 12px;font-size:12px}
+
+    /* MINIATURAS */
+    .Ambientes{display:flex;gap:7px;margin-top:10px;height:55px}
+    .Ambientes img{width:85px;height:55px;object-fit:cover;cursor:pointer;border:2px solid transparent;opacity:.7}
+    .Ambientes img:hover,.Ambientes img.On{opacity:1;border-color:#ffda00}
+
+    /* PRODUTO */
+    .ProdTop{display:flex;align-items:center;gap:20px}
+
+    .ProdDados{flex:1}
+    .Marca{font-size:11px;color:#ffda00;font-weight:bold;margin-bottom:5px}
+    .Nome{font-size:25px;font-weight:bold;line-height:1.05}
+    .CorNome{display:flex;align-items:center;gap:9px;margin:13px 0;color:#bbb}
+    .Bolinha{width:25px;height:25px;background:#ffff63;border-radius:50%;border:2px solid #fff}
+
+    .Tamanhos{display:flex;gap:6px}
+    .Tamanhos button{background:#3b4047;color:#ddd;border:1px solid #555;padding:8px 12px;cursor:pointer}
+    .Tamanhos button:hover,.Tamanhos button.On{background:#ffda00;color:#222;border-color:#ffda00}
+
+    .Preco{font-size:26px;font-weight:bold;margin-top:13px}
+    .Preco small{font-size:12px;color:#aaa;font-weight:normal}
+
+    .Add{background:#00a43c;color:#fff;border:0;padding:12px;width:100%;font-weight:bold;cursor:pointer;margin-top:10px}
+    .Add:hover{background:#00b945}
+
+    .Linha{height:1px;background:#41464d;margin:18px 0}
+    .InfoTitle{font-size:16px;font-weight:bold;margin-bottom:8px}
+    .Info{color:#b8bbc0;font-size:12px;line-height:1.55}
+    .Tags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+    .Tag{background:#343940;padding:6px 9px;font-size:11px;color:#ddd}
+
+    @media(max-width:800px){
+        #Simulador{height:auto;display:block}
+        .SimLeft,.SimRight{width:100%}
+        .SimLeft{height:500px}
+        .SimRight{border:0}
+    }
+    .LataBox{position:relative;width:155px;height:190px;display:flex;align-items:center;justify-content:center}
+    .Lata{width:155px;height:190px;object-fit:contain;position:relative;z-index:2}
+    .LataCor{position: absolute;width: 40px;height: 40px;border-radius: 50%;right: 97px;bottom: 23px;z-index:1}
+</style>
+
+<style> /*Lixo*/
+    .SimTitle{font-size:27px;font-weight:bold;margin-bottom:5px}
+    .SimSub{font-size:12px;color:#aeb2b8;margin-bottom:15px}
+</style>
+
+<body>
+    <section id="Simulador">
+        <div class="SimLeft Cl"> <!-- ESQUERDA -->
+            <div class="SimTitle">Encontre a cor ideal para sua casa</div>
+            <div class="SimSub">Escolha uma cor e veja como ela fica no ambiente.</div>
+            <div class="Cores" id="Cores"></div>
+            <div class="Ambiente"></div>
+            <div class="Ambientes" id="Ambientes"></div>
+        </div>
+        <div class="SimRight"></div> <!-- DIREITA -->
+    </section>
+</body>
+
+<script>
+    function Produto(i=0){
+        let p=J.PRODs[i]
+        Inn($(".SimRight"),`
+            <div class="Produto h100 Cl">
+                <div class="ProdTop">
+                    <div class="LataBox">
+                        <i class="LataCor" style="background:${p.hex}"></i>
+                        <img class="Lata" src="./Banco/Lata.webp">
+                    </div>
+                    <div class="ProdDados">
+                        <div class="Marca">${p.marca}</div>
+                        <div class="Nome">${p.nome}</div>
+                        <div class="CorNome">
+                            <i class="Bolinha" style="background:${p.hex}"></i>
+                            <span class="NomeCor">${p.cor}</span>
+                        </div>
+                        <div class="Tamanhos">${p.tam.map((x,i)=>`<button class="${!i?'On':''}">${x}</button>`).join("")}</div>
+                        <div class="Preco">R$ ${p.preco} <small>/ unidade</small></div>
+                    </div>
+                </div>
+                <button class="Add">ADICIONAR AO CARRINHO</button>
+                <div class="Linha"></div>
+                <div class="InfoTitle">Informações da tinta</div>
+                <div class="Info">${p.info}</div>
+                <div class="Tags">${p.tags.map(x=>`<span class="Tag">✓ ${x}</span>`).join("")}</div>
+            </div>`)
+        $$(".Tamanhos button").forEach(b=>b.onclick=()=>{$$(".Tamanhos button").forEach(x=>Rmv(x,"On")) ; Add(b,"On")})
+    }
+
+    function TrocaAmb(e,Src){
+        $$(".Ambientes img").forEach(x=>Rmv(x,"On"))
+        Add(e,"On")
+        $("#AmbImg").src=`./Banco/Mokup_${Src}.webp`
+    }
+
+    function TrocaCor(e,n,c){
+        $$(".Cor").forEach(x=>Rmv(x,"On"))
+        Add(e,"On")
+        $("#AmbCor").style.background=c
+        $(".Bolinha").style.background=c
+        $(".LataCor").style.background=c
+        $(".NomeCor").innerText=n
+        $("#CorNomeAmb").innerText=n
+        $("#CorHex").innerText=c.toUpperCase()
+    }
+
+    const Tm_Ambiente=(amb="Sala TV",n=C[0][0],c=C[0][1])=>`
+        <div class="AmbCor" id="AmbCor" style="background:${c}"></div>
+        <img id="AmbImg" src="./Banco/Mokup_${amb}.webp">
+        <div class="AmbInfo"><b id="CorNomeAmb">${n}</b> · <span id="CorHex">${c.toUpperCase()}</span></div>`
+
+    const Tm_Ambent=x=>["Cozinha","Sala","Sala TV"].map((n,i)=>`
+        <div class="Cl">
+            <img src="./Banco/Amb_${n}.webp" class="${i==x?"On":""}" title="${n}" onclick="TrocaAmb(this,'${n}')">
+            <p>${n}</p>
+        </div>`).join("")
+
+    const Tm_Cores=x=>C.map(([n,c],i)=>`
+        <i class="Cor ${i==x?"On":""}" style="background:${c}" onclick="TrocaCor(this,'${n}','${c}')"></i>`).join("")
+
+    Produto()
+    Inn(".Ambiente",Tm_Ambiente())
+    Inn("#Cores",Tm_Cores(0))
+    Inn("#Ambientes",Tm_Ambent(2))
+</script>
+
+</html>
