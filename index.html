@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <title>Nuvinil</title>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <link  href="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/fontes.css"        rel="stylesheet">
+    <!-- <link  href="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/fontes.css"        rel="stylesheet">
     <link  href="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/CSSBiblioteca.css" rel="stylesheet">
-    <script src="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/PreScript.js"      ></script>
+    <script src="https://raw.githack.com/InfinityGraff/MyBiblioteca/main/PreScript.js"      ></script> -->
+    <link href="https://cdn.jsdelivr.net/gh/InfinityGraff/MyBiblioteca@main/fontes.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/InfinityGraff/MyBiblioteca@main/CSSBiblioteca.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/InfinityGraff/MyBiblioteca@main/PreScript.js"></script>
     <script src="./BS.js"></script>
+    <link rel="stylesheet" href="./Animation.css">
 </head>
 
 <style>
@@ -19,9 +23,13 @@
     :root{--C1:#2b2f35;--C2:radial-gradient(circle at center, rgba(255,255,255,.05), rgba(0,0,0,.7)),linear-gradient(rgba(47,50,54,.8), rgba(47,50,54,.8)), center / cover no-repeat fixed}
     body        {background:var(--C2);color:#fff}
     header      {height:100px ; background:var(--C1); padding:20px 40px; z-index:3}   
+    
     button      {transition:all 0.2s ease-in-out ; display: flex; align-items: center; justify-content: center; gap: 5px; color:#fff ; border-radius:8px; ; cursor:pointer ; padding: 6px; height: 35px;}
     button:hover{transform: scale(1.05)}
     button svg  {width: 20px; fill: white;}
+        .BtnGren{background:#00a43c;padding:12px}
+        .BtnGren:hover{background:#00b945}
+
     main        {margin-top:100px}
     .Logo       {width:200px}
     nav a    {background:none; border:0; color:#cccccc; font-size: 20px;}
@@ -33,7 +41,7 @@
     footer { position:fixed; right:30px; bottom:20px; background:#ffd400; color:#000; padding:12px 20px; border-radius:30px; }
     #produtos { padding:40px 60px; }
     #produtos .title { text-align:center; font-size:36px; margin-bottom:40px; }
-    #Div-Prod { display:grid; grid-template-columns:repeat(2,1fr); gap:30px;  padding: 60px;}
+    #Div-Prod { display:grid; grid-template-columns:repeat(3,2fr); gap:30px;  padding: 60px;}
     table{border-collapse:collapse;background:#2f3236;color:#fff;font-size:14px}
     th{background:#1f2226;text-transform:uppercase;font-weight:600;padding:10px;border-bottom:2px solid #3a3d42}
     td{padding:6px;border-bottom:1px solid #3a3d42}
@@ -45,13 +53,16 @@
     td.Foco p{background:#2563eb;color:#fff}
     table td:nth-child(10) img {width: 30px;} /*Depois Aplicar isso pra Todas Imagens menos pra Lixeira*/
     .FModal  {position:fixed;top:0px; left:0px;width:100%;height:100%;z-index:999;background:#00000046;backdrop-filter:blur(10px);animation:FModal 0.5s}
-    .FModal>*{padding:15px; box-shadow: 10px 10px 20px black;animation: modal 0.5s}
+    .FModal>*{padding:15px; box-shadow: 10px 10px 20px black;animation: modal 0.5s;display: flex;align-items: center; justify-content: center;}
     .FModal>*{background:#1b1b1b}
 
     /*CSS Produtos*/
     .produ             {background:#ffffff14; border-radius:16px; padding:24px; box-shadow:inset 0 0 0 1px #ffffff14} .HIG.produ{height: 550px; width: 80%;}
     .produ .Lapis      {position:absolute; width:20px; fill:#ffffff70 ; right: -25px;top: 0px; display: none;}
-    .produ .FOTO img   {width:105px; height:130px; flex-shrink:0}          .HIG.produ .FOTO img{width: 400px; height: 400px;}
+        .produ .FOTO img{width:105px ; height:100px; flex-shrink:0}
+    .HIG.produ .FOTO img{width: 400px; height: 400px;}
+    .MED.produ .FOTO img{width: 190px; height:220px; flex-shrink:0}
+
     .produ .prd-5      {display:none}
     .produ button      {background:#2b2d31}
     .Inspr button      {background: #2b2d31}
@@ -84,7 +95,7 @@
 
 <script> // tEMPLATES
     // Templates
-    const Rodape=_=>Inn($("#FooterR"),`${J.FOOT.map(([e,...l])=>`<div class="Cl Start2 Gap w20"><div class="B">${e}</div>${l.map(x=>`<a class="Wht">${x}</a>`).join("")}</div>`).join("")}`)
+    const Rodape=_=>Inn($("#FooterR"),`${J.FOOT.map(([e,...l])=>`<div class="Cl Start2 Gap w20"><div class="B">${e}</div>${l.map((x,i)=>`<a class="Wht An-Esq An-D${i+2}">${x}</a>`).join("")}</div>`).join("")}`)
     const Inspirasse=_=>Inn($('.Inspr'),`<h2>Galeria de Inspiração</h2><div class="Start">${For(5).map(e=>`<div class="inspppp"><img src="./Banco/Inspira (${e+1}).webp"></div>`).join('')}</div><button>Ver mais idéias.</button>`)
     const Tm_thSort=(arr,Typ)=>arr.map(e=>`<th>${e}</th>`).join('')     
 
@@ -93,23 +104,23 @@
     function AbrirItem(Id){Nav('Item') ; Inn($('.ItemItem'),Tm_Prod('HIG',[JJ['PROD'][Id]]))}
 
     function Tm_Prod(Mod,arry){
-        const Btns=e=>`<button onclick="AbrirItem('${e.Id}')">Ver mais</button><button>${SVVG.Carr}Adicionar ao Carrinho</button>`
-        return arry.map(e=>e?`<div class="tr-${e.Id} produ noslt Cl ${Mod}">
+        const Btns=e=>`<button onclick="ModalProd('${e.Id}')">Ver mais</button><button>${SVVG.Carr}Adicionar ao Carrinho</button>`
+        return arry.map(e=>e?`<div class="tr-${e.Id} produ noslt Cl Bt ${Mod}" style="padding:10px 5px">
                 <a class="prd-5">${''}</a>
                 <div class="Ct Wrp Gap">
-                    <div class="MaisIMGs Cl Start AMAIS Gap">${e.Img}${e.Img}${e.Img}</div>
+                    <div class="MaisIMGs Cl Start AMAIS Gap"><img src="${e.Img}"><img src="${e.Img}"><img src="${e.Img}"></div>
                     <div class="FOTO"><img src="${e.Img}"></div>
                     <div class="info Start2 Gap">
                         <div class="Rltv prd-1">${e.Nome}<a class="Lapis">${SVVG.Laps}</a></div>
                         <div class="AMAIS">⭐ ${'★'.repeat(e.Star)}${'☆'.repeat(5-e.Star)}<span>${e.Avalia}avaliações</span></div>
                         <div class="Rltv prd-2">${e.Valr}<a class="Lapis">${SVVG.Laps}</a></div>
                         <small class="AMAIS">em até 2x de R$ ${(e.Valr/e.Divid).toFixed(2)}</small>
-                        <div>Ver Opções de Pagamento</div>
+                        <div class="AMAIS">Ver Opções de Pagamento</div>
                         <div class="AMAIS Start2"><p>Volume:</p><div class="vol   Ct gap">${e.Vol.map(v=>`<button>${v}</button>`).join('')}</div></div>
-                        <div class="AMAIS Start2"><p>Cor:   </p><div class="cores Ct gap">${e.Cor.map(c=>`<span title="${c}" style="background:${Cores[c]}"></span>`).join('')}</div></div>
+                        <div class="AMAIS Start2"><p>Cor:   </p><div class="cores Ct gap">${e.Cor.map(c=>`<span title="${c}" style="background:${CoresS[c]}"></span>`).join('')}</div></div>
                         <div class="AMAIS Start2"><p>Quantidade:</p><input type="number" value="1" min="1"></div> 
                         <div class="AMAIS Start2"><p>Frete:</p><input type="text" placeholder="00000-000"></div>
-                        <div class="Rltv prd-3">${e.Desc}<a class="Lapis">${SVVG.Laps}</a></div>
+                        <div class="AMAIS Rltv prd-3">${e.Desc}<a class="Lapis">${SVVG.Laps}</a></div>
                         <div class="btnIn Ct gap">${Btns(e)}</div>
                     </div>
                 </div>
@@ -120,8 +131,8 @@
 
 <body class="Cl">
     <header class="w100 Bt Fx">
-        <div><img class="Logo PT" src="./Imgs/Logo.webp" onclick="Nav('Home')"></div>
-        <div class="w50"><input class="w80" type="text" placeholder="Pesquisar..."></div>
+        <div><img class="Logo PT Hov" src="./Imgs/Logo.webp" onclick="Nav('Home')"></div>
+        <div class="w50"><input class="w80 Hov" type="text" placeholder="Pesquisar..."></div>
         <nav class="Ct Gap">
             <a data-Nav="Home" class="Hov PT Atv" onclick="Nav('Home')">Início  </a>
             <a data-Nav="Prod" class="Hov PT"     onclick="Nav('Prod')">Produtos</a>
@@ -153,17 +164,17 @@
                 #Depoimentos{padding: 20px;}
                 .Inspr      {padding: 20px;}
                 .Inspr > div{flex-wrap: nowrap; overflow-x: scroll; width: 100%;}
-                .inspppp img{height: 150px;width: 250px; border-radius: 20px; padding: 5px;}
+                .inspppp img{height: 120px;width: 200px; border-radius: 20px; padding: 5px;}
             </style>
 
             <div class="SS1 bkggg Start">
-                <div class="Title Start2"><p class="g">NUVINIL</p><p class="r">ONDE CADA COR</p><p class="y">VIRA HISTÓRIA.</p></div>
+                <div class="Title Start2"><p class="g An-Esq An-D1">NUVINIL</p><p class="r An-Esq An-D2">ONDE CADA COR</p><p class="y An-Esq An-D3">VIRA HISTÓRIA.</p></div>
             </div>
 
             <div class="SS2 Ct">
-                <div class="Ct"><img class="HOV" src="./Imgs/IconFrete.webp"><div class="Start2 noslt"><p>Entrega Rápida e Segura      </p><a>Enviamos sua Tinta em até 24h.             </a></div></div><b>.</b>
-                <div class="Ct"><img class="HOV" src="./Imgs/IconCasa.webp" ><div class="Start2 noslt"><p>Cores Incriveis para sua Casa</p><a>Encontre a Cor Ideal e Transforme sua casa.</a></div></div><b>.</b>
-                <div class="Ct"><img class="HOV" src="./Imgs/IconScudo.webp"><div class="Start2 noslt"><p>Produtos de Alta Qualidade   </p><a>Tintas que Garantem um Ambiente Perfeito.  </a></div></div>
+                <div class="Ct An-Baixo An-D2"><img class="HOV" src="./Imgs/IconFrete.webp"><div class="Start2 noslt"><p>Entrega Rápida e Segura      </p><a>Enviamos sua Tinta em até 24h.             </a></div></div><b>.</b>
+                <div class="Ct An-Baixo An-D3"><img class="HOV" src="./Imgs/IconCasa.webp" ><div class="Start2 noslt"><p>Cores Incriveis para sua Casa</p><a>Encontre a Cor Ideal e Transforme sua casa.</a></div></div><b>.</b>
+                <div class="Ct An-Baixo An-D4"><img class="HOV" src="./Imgs/IconScudo.webp"><div class="Start2 noslt"><p>Produtos de Alta Qualidade   </p><a>Tintas que Garantem um Ambiente Perfeito.  </a></div></div>
             </div>
 
             <div class="SS3 Bt">
@@ -198,25 +209,19 @@
                     
                     /* PRODUTO */
                     .ProdDados{flex:1}
-                    .Marca{font-size:11px;color:#ffda00;font-weight:bold;margin-bottom:5px}
+                    .Marca{font-size:11px;color:#ffda00;font-weight:bold}
                     .Nome{font-size:25px;font-weight:bold;line-height:1.05}
-                    .CorNome{display:flex;align-items:center;gap:9px;margin:13px 0;color:#bbb}
-                    .Bolinha{width:25px;height:25px;background:#ffff63;border-radius:50%;border:2px solid #fff}
-
+                    .CorNome{display:flex;align-items:center;gap:9px;color:#bbb}
+                        .Bolinha{width:25px;height:25px;background:#ffff63;border-radius:50%;border:2px solid #fff}
                     .Tamanhos{display:flex;gap:6px}
                     .Tamanhos button{background:#3b4047;color:#ddd;border:1px solid #555;padding:8px 12px;cursor:pointer}
                     .Tamanhos button:hover,.Tamanhos button.On{background:#ffda00;color:#222;border-color:#ffda00}
+                    .Preco{font-size:26px;font-weight:bold;}.Preco small{font-size:12px;color:#aaa;font-weight:normal}
 
-                    .Preco{font-size:26px;font-weight:bold;margin-top:13px}
-                    .Preco small{font-size:12px;color:#aaa;font-weight:normal}
-
-                    .Add{background:#00a43c;color:#fff;border:0;padding:12px;width:100%;font-weight:bold;cursor:pointer;margin-top:10px}
-                    .Add:hover{background:#00b945}
-
-                    .Linha{height:1px;background:#41464d;margin:18px 0}
-                    .InfoTitle{font-size:16px;font-weight:bold;margin-bottom:8px}
+                    .Linha{height:1px;background:#41464d ; color: transparent;}
+                    .InfoTitle{font-size:16px;font-weight:bold}
                     .Info{color:#b8bbc0;font-size:12px;line-height:1.55}
-                    .Tags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+                    .Tags{display:flex;gap:6px;flex-wrap:wrap}
                     .Tag{background:#343940;padding:6px 9px;font-size:11px;color:#ddd}
 
                     @media(max-width:800px){
@@ -245,38 +250,30 @@
 
                 <script>
                     function Produto(i=0){
-                        let p=J.PRODs[i]
+                        let p=J.PROD[18]
                         Inn($(".SimRight"),`
-                            <div class="Produto h100 Cl">
-                                <div class="ProdTop">
-                                    <div class="LataBox">
-                                        <i class="LataCor" style="background:${p.hex}"></i>
-                                        <img class="Lata" src="./Banco/Lata.webp">
-                                    </div>
-                                    <div class="ProdDados">
-                                        <div class="Marca">${p.marca}</div>
-                                        <div class="Nome">${p.nome}</div>
-                                        <div class="CorNome">
-                                            <i class="Bolinha" style="background:${p.hex}"></i>
-                                            <span class="NomeCor">${p.cor}</span>
-                                        </div>
-                                        <div class="Tamanhos">${p.tam.map((x,i)=>`<button class="${!i?'On':''}">${x}</button>`).join("")}</div>
-                                        <div class="Preco">R$ ${p.preco} <small>/ unidade</small></div>
+                            <div class="Produto h100 Cl Gap">
+                                <div class="ProdTop Ct">
+                                    <div class="LataBox"><i class="LataCor" style="background:#fff45c"></i><img class="Lata" src="${p.Img}"></div>
+                                    <div class="ProdDados Cl Gap">
+                                        <div class="Marca">Nuvinil Tintas</div>
+                                        <div class="Nome">${p.Nome}</div>
+                                        <div class="CorNome"><i class="Bolinha" style="background:#fff45c"></i><span class="NomeCor">Amarelo Solar</span></div>
+                                        <div class="Tamanhos">${p.Vol.map((x,i)=>`<button class="${!i?'On':''}">${x}</button>`).join("")}</div>
+                                        <div class="Preco">R$ ${p.Valr} <small>/ unidade</small></div>
                                     </div>
                                 </div>
-                                <button class="Add">ADICIONAR AO CARRINHO</button>
-                                <div class="Linha"></div>
+                                <button class="w100 BtnGren">ADICIONAR AO CARRINHO</button>
+                                <div class="Linha w100">.</div>
                                 <div class="InfoTitle">Informações da tinta</div>
-                                <div class="Info">${p.info}</div>
-                                <div class="Tags">${p.tags.map(x=>`<span class="Tag">✓ ${x}</span>`).join("")}</div>
+                                <div class="Info">${p.Desc}</div>
+                                <div class="Tags">${p.Tags.map(x=>`<span class="Tag">✓ ${x}</span>`).join("")}</div>
                             </div>`)
                         $$(".Tamanhos button").forEach(b=>b.onclick=()=>{$$(".Tamanhos button").forEach(x=>Rmv(x,"On")) ; Add(b,"On")})
                     }
 
                     function TrocaAmb(e,Src){
-                        $$(".Ambientes img").forEach(x=>Rmv(x,"On"))
-                        Add(e,"On")
-                        $("#AmbImg").src=`./Banco/Mokup_${Src}.webp`
+                        $$(".Ambientes img").forEach(x=>Rmv(x,"On")) ; Add(e,"On") ; $("#AmbImg").src=`./Banco/Mokup_${Src}.webp`
                     }
 
                     function TrocaCor(e,n,c){
@@ -312,18 +309,15 @@
             </div>
 
             <div class="SS5 Cl w100 Pddn-Y Gap">
-                <div class="Cl Gap"><h2>DEPOIMENTOS</h2><h1 class="Blk">O que nossos clientes dizem sobre nós!</h1></div>
+                <div class="Cl Gap"><h1 class="Blk">O que nossos clientes dizem sobre nós!</h1></div>
                 <div id="Depoimentos" class="Rw Gap w90 Mg"></div>
                 <script>
                     function Depoim(){
-                        Inn($("#Depoimentos"),J.DPIM.map(d=> `
-                        <article class="Start2 Gap w30 Pddn-XY Rd Shdw Blk" style="background:#fff;min-width:280px">
+                        Inn($("#Depoimentos"),J.DPIM.map((d,x)=> `
+                        <article class="Start2 Gap w30 Pddn-XY Rd Shdw Blk An-Baixo An-D${x+2} Hov" style="background:#fff;min-width:280px">
                             <div class="Bt Gap w100">
-                                <img src="./Banco/${d.img}" class="RD WH40" alt="${d.nome}">
-                                <div class="Start2">
-                                    <div class="B">${d.nome}</div>
-                                    <div style="color:gray">á 5 Dias Atrás</div>
-                                </div>
+                                <img src="${d.Img}" class="RD WH40">
+                                <div class="Start2"><div class="B">${d.nome}</div><div style="color:gray">á 5 Dias Atrás</div></div>
                                 <img src="./Imgs/google.webp" class="WH15">
                             </div>
                             <div class="Ct gap">${For(d.star).map(e=>`<img class="Star" src="./Imgs/Estrela.svg">`).join('')}</div>
@@ -337,15 +331,19 @@
                 <div class="Cl w40 Gap Start2">
                     <h1>Entre em contato ou faça uma visita a nossa Loja</h1>
                       <div class="Coluninha Start2 Gap">
+                        
+                        <span class="Ct gap"><img src="./Imgs/Zap.svg"> (11) 96714-1923  -  Vendas</span>
+                        <span class="Ct gap"><img src="./Imgs/Zap.svg"> (81) 98602-4114  -  Vendas PE</span>
+                        <span class="Ct gap"><img src="./Imgs/Zap.svg"> (31) 99703-0759  -  Vendas Minas Gerais</span>
                         <span class="Ct gap"><img src="./Imgs/Zap.svg"> (11) 96714-1923  -  Televendas</span>
-                        <span class="Ct gap"><img src="./Imgs/Zap.svg"> (11) 94906-6656  -  Assistência técnica</span>
+                        <span class="Ct gap"><img src="./Imgs/Zap.svg"> (11) 94906-6656  -  SAC - Assistência técnica</span>
                         <span class="Ct gap"><img src="./Imgs/Insta.svg"> @NuvinilTintas</span>
                         <span>Horário de segunda a sexta das 8 as 16 hrs</span>
                         <span>Endereço: Av Pedro Mendes 2478 Bairro montanhão Cidade: São Bernardo do Campo</span>
                     </div>
                     <button class="Grn Wht Rd Pddn-XY hov">Entre em contato</button>
                 </div>
-                <div class="w40 Rd Hddn Shdw"><iframe src="https://www.google.com/maps?q=Av.%20Conselheiro%20Aguiar%20122%20Recife&output=embed" class="w100" style="height:300px;border:0;"></iframe></div>
+                <div class="w40 Rd Hddn Shdw An-Centro An-D2" style="background: white;"><iframe src="https://www.google.com/maps?q=Av.%20Conselheiro%20Aguiar%20122%20Recife&output=embed" class="w100" style="height:300px;border:0;"></iframe></div>
             </div>
 
             <div class="w100 Pddn-Y Wht" style="background:#0b2a6f">
@@ -364,32 +362,70 @@
         </section>
 
         <section id="Sprt" class="page none w100">
-            <h2>Suporte</h2>
-            <p>aqui vc escreve o que vai querer no Suporte</p>
-            <div>
-                Biografia Institucional — Nuvinil Tintas
-                A Nuvinil Tintas é uma empresa brasileira comprometida com a qualidade, a inovação e a excelência em soluções para pintura residencial, comercial e industrial. Fundada com o propósito de transformar ambientes por meio de cores vibrantes e serviços especializados, a Nuvinil destaca-se por oferecer um portfólio completo de tintas premium e serviços profissionais de aplicação, unindo produtos de alto desempenho à prática de mão de obra qualificada.
-                Desde o começo, nossa missão tem sido facilitar a experiência de renovação dos nossos clientes, garantindo resultados duradouros, estética impecável e total satisfação. Sabemos que a escolha da tinta certa e a aplicação correta fazem toda a diferença — por isso investimos continuamente em tecnologia, treinamento de profissionais e atendimento próximo aos nossos clientes.
-                Com foco na sustentabilidade, na segurança e nas tendências de mercado, a Nuvinil Tintas oferece soluções para todos os tipos de superfícies, sempre com suporte especializado para orientar cada etapa do processo de pintura — da escolha da cor ao acabamento perfeito.
-                Acreditamos que cada espaço tem uma história para contar, e estamos aqui para ajudar a colorir esses momentos com confiança, profissionalismo e paixão pelo que fazemos.
+            <style>
+            #Sprt{padding:50px 7%;min-height:100vh}#Sprt h2{font:40px Tommy_Bold;margin:0}#Sprt .Sub{color:#aaa;margin:5px 0 30px}
+            .SprtGrid{display:grid;grid-template-columns:1fr 1.7fr;gap:25px}.SprtBox{background:#ffffff0d;border:1px solid #ffffff14;border-radius:16px;padding:25px}
+            .SprtBox h3{font:22px Tommy_Bold;margin:0 0 10px}.SprtBox p{color:#bbb;line-height:1.7}.SprtMarca{font:13px Tommy_Medium;color:#ffd400;letter-spacing:3px;text-transform:uppercase}
+            .SprtLinks{display:grid;gap:10px;margin-top:20px}.SprtLinks a{background:#ffffff0b;border:1px solid #ffffff14;padding:15px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:15px;transition:.2s}.SprtLinks a:hover{background:#ffffff15;transform:translateX(4px)}.SprtLinks b{display:block}.SprtLinks small{color:#999}
+            .SprtBio{margin-top:25px}.SprtBio h3{font:25px Tommy_Bold;border-left:4px solid #ffd400;padding-left:12px}.SprtBio p{color:#bbb;line-height:1.8;text-align:justify}
+            @media(max-width:800px){#Sprt{padding:30px 20px}.SprtGrid{grid-template-columns:1fr}}
+            </style>
+
+            <h2>Suporte</h2><p class="Sub">Como podemos ajudar você?</p>
+
+            <div class="SprtGrid">
+                <div class="SprtBox">
+                    <span class="SprtMarca">Atendimento</span><h3>Fale com a Nuvinil</h3>
+                    <p>Precisa de ajuda para escolher um produto, uma cor ou encontrar a solução ideal para sua pintura?</p>
+                    <div class="SprtLinks">
+                        <a><span>💬</span><div><b>WhatsApp</b><small>Fale com nossa equipe</small></div></a>
+                        <a><span>🎨</span><div><b>Ajuda com produtos</b><small>Encontre a tinta ideal</small></div></a>
+                        <a><span>🖌️</span><div><b>Suporte técnico</b><small>Dúvidas sobre aplicação e rendimento</small></div></a>
+                        <a><span>📦</span><div><b>Pedidos e entregas</b><small>Acompanhe ou tire dúvidas sobre seu pedido</small></div></a>
+                    </div>
+                </div>
+
+                <div class="SprtBox">
+                    <span class="SprtMarca">Nuvinil Tintas</span><h3>Estamos aqui para ajudar</h3>
+                    <p>Da escolha da cor ao acabamento final, nossa equipe está pronta para orientar você em cada etapa do seu projeto.</p>
+                    <div class="Linha"></div><br>
+                    <b>Horário de atendimento</b><p>Segunda a sexta-feira<br>08:00 às 18:00</p>
+                    <b>Atendimento especializado</b><p>Residencial • Comercial • Industrial</p>
+                    <button class="BtnGren">Iniciar atendimento</button>
+                </div>
+            </div>
+
+            <div class="SprtBox SprtBio">
+                <span class="SprtMarca">Quem somos</span><h3>Biografia Institucional — Nuvinil Tintas</h3>
+                <p>A Nuvinil Tintas é uma empresa brasileira comprometida com a qualidade, a inovação e a excelência em soluções para pintura residencial, comercial e industrial. Fundada com o propósito de transformar ambientes por meio de cores vibrantes e serviços especializados, a Nuvinil destaca-se por oferecer um portfólio completo de tintas premium e serviços profissionais de aplicação, unindo produtos de alto desempenho à prática de mão de obra qualificada.</p>
+                <p>Desde o começo, nossa missão tem sido facilitar a experiência de renovação dos nossos clientes, garantindo resultados duradouros, estética impecável e total satisfação. Sabemos que a escolha da tinta certa e a aplicação correta fazem toda a diferença — por isso investimos continuamente em tecnologia, treinamento de profissionais e atendimento próximo aos nossos clientes.</p>
+                <p>Com foco na sustentabilidade, na segurança e nas tendências de mercado, a Nuvinil Tintas oferece soluções para todos os tipos de superfícies, sempre com suporte especializado para orientar cada etapa do processo de pintura — da escolha da cor ao acabamento perfeito.</p>
+                <p>Acreditamos que cada espaço tem uma história para contar, e estamos aqui para ajudar a colorir esses momentos com confiança, profissionalismo e paixão pelo que fazemos.</p>
             </div>
         </section>
 
         <section id="Carr" class="page w100 none">
-            <h1>aqui fica a pagina de carrihnho</h1>
+            <h1>Carrinho (Indisponível no Momento...)</h1>
         </section>
 
         <section id="Item" class="page w100 none"><div class="ItemItem Ct"></div></section>
     </main>
 
-    <footer>📞 (11) 96714.1923</footer>
+    <footer class="PT Hov">📞 (11) 96714.1923</footer>
 </body>
 
 <script>
+    ['DPIM','FOOT','CORS','PROD'].forEach(Typ=>{fazJJJ(Typ,J[Typ])})
     Onloads('body')
     Depoim() ; Inspirasse() ; Rodape()
     Inn($('.Prods'   ),`<h2>Mais Vendidos</h2><div class="Start">${Tm_Prod('LOW',J.PROD)}</div>`)
     Inn($('#Div-Prod'),Tm_Prod('MED',J.PROD))
+
+    const Obs=new IntersectionObserver(es=>{
+        es.forEach(x=>x.isIntersecting&&x.target.classList.add('Show'))
+    },{threshold:.15})
+
+    document.querySelectorAll('[class*="An-"]').forEach(e=>Obs.observe(e))
 </script>
 
 </html>
