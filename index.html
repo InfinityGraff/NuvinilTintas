@@ -100,8 +100,8 @@
     const Tm_thSort=(arr,Typ)=>arr.map(e=>`<th>${e}</th>`).join('')     
 
     // PRODUTOS
-    function ModalProd(Id){MODAL(Tm_Prod('HIG',[JJ['PROD'][Id]]))}
-    function AbrirItem(Id){Nav('Item') ; Inn($('.ItemItem'),Tm_Prod('HIG',[JJ['PROD'][Id]]))}
+    function ModalProd(Id){MODAL(Tm_Prod2('HIG',[JJ['PROD'][Id]]))}
+    function AbrirItem(Id){Nav('Item') ; Inn($('.ItemItem'),Tm_Prod2('HIG',[JJ['PROD'][Id]]))}
 
     function Tm_Prod(Mod,arry){
         const Btns=e=>`<button onclick="ModalProd('${e.Id}')">Ver mais</button><button>${SVVG.Carr}Adicionar ao Carrinho</button>`
@@ -127,6 +127,25 @@
                 <div class="btnFora Ct gap">${Btns(e)}</div>
             </div>` : '').join('')
     }
+
+    function Tm_Prod2(Mod,arry){
+        const Icon=n=>`<img src="./IconSVG/${n}.svg" alt="">`
+        const Real=n=>Number(n).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})
+        const Btns=e=>`<button onclick="ModalProd('${e.Id}')">Ver mais</button><button class="AddCarr" onclick="AddCarrinho('${e.Id}')">${Icon('shopping-cart')} Carrinho</button>`
+        return arry.map(e=>e?`<div class="tr-${e.Id} noslt Rltv produ ${Mod}">
+            <div class="ProdTopo Abslt"><span class="ProdSelo">${e.Selo||''}</span><button class="ProdFav" onclick="this.classList.toggle('On')">${Icon('heart')}</button></div>
+            <div class="ProdFoto"><img src="${e.Img}" loading="lazy" alt="${e.Nome}"></div>
+            <div class="ProdConteudo">
+                <h3  class="ProdNome Retc">${e.Nome}</h3>
+                <div class="ProdAvalia "><span>${'★'.repeat(e.Star||0)}${'☆'.repeat(5-(e.Star||0))}</span><small>(${e.Avalia||0})</small></div>
+                <div class="ProdPreco  ">${Real(e.Valr)}</div>
+                <div class="ProdParcela">ou ${e.Divid||1}x de ${Real(e.Valr/(e.Divid||1))}</div>
+                <div class="ProdCores  ">${(e.Cor||[]).map(c=>`<span title="${c}" style="background:${CoresS[c]||'#ccc'}"></span>`).join('')}</div>
+                <div class="ProdVolumes">${(e.Vol||[]).map(v=>`<button onclick="this.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('On'));this.classList.add('On')">${v}</button>`).join('')}</div>
+                <div class="ProdBotoes ">${Btns(e)}</div>
+            </div>
+        </div>`:'').join('')
+    }
 </script>
 
 <body class="Cl">
@@ -136,6 +155,7 @@
         <nav class="Ct Gap">
             <a data-Nav="Home" class="Hov PT Atv" onclick="Nav('Home')">Início  </a>
             <a data-Nav="Prod" class="Hov PT"     onclick="Nav('Prod')">Produtos</a>
+            <a data-Nav="Loja" class="Hov PT"     onclick="Nav('Loja')">Loja    </a>
             <a data-Nav="Sprt" class="Hov PT"     onclick="Nav('Sprt')">Suporte </a>
             <a data-Nav="Carr" class="Hov PT"     onclick="Nav('Carr')"><img src="./Imgs/Carrinho.svg"></a>
             <a data-Nav="Item" class="Hov PT none"onclick="Nav('Item')"></a>
@@ -361,6 +381,16 @@
             <div id="Div-Prod"></div>
         </section>
 
+        <section id="Loja" class="page none w100">
+            <div class="LojaLayout Gap">
+                <aside id="Filtros"></aside>
+                <div class="LojaConteudo Cl Gap">
+                    <div id="HeadProds" class="w100"></div>
+                    <div id="Div-Prods" class="1100"></div>
+                </div>
+            </div>
+        </section>
+
         <section id="Sprt" class="page none w100">
             <style>
             #Sprt{padding:50px 7%;min-height:100vh}#Sprt h2{font:40px Tommy_Bold;margin:0}#Sprt .Sub{color:#aaa;margin:5px 0 30px}
@@ -414,6 +444,209 @@
     <footer class="PT Hov">📞 (11) 96714.1923</footer>
 </body>
 
+<style>
+    .Boxxys{background:#24282e;border:1px solid #ffffff14;border-radius:15px;padding:15px;gap:15px}
+    .MED.produ{position:relative;display:flex;flex-direction:column;align-items:stretch;justify-content:space-between;background:#fff;color:#172033;border-radius:16px;padding:12px;min-width:0;height:100%;box-shadow:0 4px 12px #0003;overflow:hidden}
+
+
+    #Loja .FiltroBox{position:sticky;top:110px}
+
+    #Loja .HeadLoja span{color:#bbb}
+    #Loja .FiltroBox h3{font-size:18px;display:flex;align-items:center;gap:9px}
+
+    #Loja{padding:30px 3%;color:#fff}
+    #Loja .LojaLayout{display:grid;grid-template-columns:275px minmax(0,1fr);align-items:start}
+    #Loja .LojaConteudo{min-width:0}
+    #Loja .IconLoja{width:18px;height:18px;object-fit:contain}
+    #Loja .FiltroGrupo{border-top:1px solid #ffffff1b;margin-top:20px;padding-top:18px}
+    #Loja .FiltroGrupo h4{font-size:14px;text-align:left;margin-bottom:13px}
+    #Loja .FiltroCategorias{display:grid;gap:5px}
+    #Loja .FiltroCategorias button{height:auto;min-height:38px;background:transparent;color:#ddd;padding:9px 10px;justify-content:space-between;text-align:left}
+    #Loja .FiltroCategorias button span{text-align:left;font-size:12px}
+    #Loja .FiltroCategorias button b{background:#ffffff15;border-radius:20px;padding:3px 8px}
+    #Loja .FiltroCategorias button:hover{transform:none;background:#ffffff12}
+    #Loja .FiltroCategorias button.On{background:#ffd400;color:#17191d;font-weight:bold}
+    #Loja .FiltroCategorias button.On b{background:#00000016}
+    #Loja .Limpar{background:transparent;color:#ffd400;font-size:11px}
+    #Loja #FiltroPreco{width:100%;accent-color:#ffd400;cursor:pointer}
+    #Loja .FiltroGrupo small,#Loja .FiltroGrupo strong{font-size:11px;color:#bbb}
+    #Loja .FiltroChecks{display:grid;gap:10px}
+    #Loja .FiltroChecks label{display:flex;align-items:center;gap:9px;cursor:pointer;text-align:left}
+    #Loja .FiltroChecks input{width:16px;height:16px;accent-color:#ffd400}
+    #Loja .FiltroCores{display:flex;flex-wrap:wrap;gap:9px}
+    #Loja .FiltroCores label{position:relative;cursor:pointer}
+    #Loja .FiltroCores input{position:absolute;opacity:0;width:1px;height:1px}
+    #Loja .FiltroCores span{display:block;width:25px;height:25px;border-radius:50%;border:2px solid #ffffff75}
+    #Loja .FiltroCores input:checked+span{outline:2px solid #ffd400;outline-offset:3px}
+    #Loja select{background:#30343c;color:white;border:1px solid #ffffff24;border-radius:8px;padding:10px;cursor:pointer}
+    #Loja .FiltroGrupo select{width:100%}
+    
+    #Loja .HeadQtd,#Loja .HeadQtd b{font-size:14px}
+    #Loja .HeadQtd b{color:#ffd400}
+    
+    #Loja .ModoProds{background:#171a20;padding:4px;border-radius:8px}
+    #Loja .ModoProds button{width:35px;height:34px;background:transparent}
+    #Loja .ModoProds button.On{background:#ffd400}
+    #Loja .ModoProds button.On img{filter:brightness(0)}
+    #Loja #Div-Prods{padding:0;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;display: grid;}
+    #Loja #Div-Prods .produ{width:100%;min-width:0;height:auto}
+    #Loja #Div-Prods.ListaProdutos{grid-template-columns:1fr}
+    #Loja #Div-Prods.ListaProdutos .produ{width:100%;max-width:none}
+    #Loja .SemProdutos{grid-column:1/-1;padding:60px;text-align:center;color:#aaa}
+    @media(max-width:1100px){#Loja #Div-Prods{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:800px){#Loja .LojaLayout{grid-template-columns:1fr}#Loja .FiltroBox{position:static}#Loja .HeadLoja{flex-wrap:wrap}#Loja #Div-Prod{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:550px){#Loja{padding:15px}#Loja #Div-Prods{grid-template-columns:1fr}#Loja .HeadLoja{justify-content:center}}
+</style>
+
+<style>
+    .Retc{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    
+    .MED.produ .ProdTopo{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:center;z-index:2;pointer-events:none}
+    .MED.produ .ProdSelo{background:#ff3434;color:white;border-radius:20px;padding:6px 12px;font-size:11px;font-weight:bold}
+    .MED.produ .ProdSelo:empty{display:none}
+    .MED.produ .ProdFav{width:35px;height:35px;border-radius:50%;background:#f5f6f8;border:1px solid #ddd;pointer-events:auto}
+    .MED.produ .ProdFav img{width:20px;height:20px}
+    .MED.produ .ProdFav.On{background:#ffe1e5}
+    .MED.produ .ProdFav.On img{filter:invert(20%) sepia(95%) saturate(4000%) hue-rotate(340deg)}
+
+    .MED.produ .ProdFoto{height:215px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+    .MED.produ .ProdFoto img{width:100%;height:100%;object-fit:contain;transition:.25s}
+    .MED.produ:hover .ProdFoto img{transform:scale(1.04)}
+    .MED.produ .ProdConteudo{display:flex;flex-direction:column;align-items:stretch;flex:1;gap:5px}
+    .MED.produ .ProdNome{font-size:17px;font-family:var(--Bold);text-align:left}
+    .MED.produ .ProdAvalia{display:flex;align-items:center;gap:8px}
+    .MED.produ .ProdAvalia span{color:#ffb900;font-size:20px;letter-spacing:0}
+    .MED.produ .ProdAvalia small{color:#8b929c;font-size:12px}
+    .MED.produ .ProdPreco{font-size:24px;font-family:var(--Bold);color:#009b77;text-align:left}
+    .MED.produ .ProdParcela{font-size:13px;color:#8b929c;text-align:left}
+    .MED.produ .ProdCores{display:flex;align-items:center;gap:9px;min-height:28px}
+    .MED.produ .ProdCores span{width:23px;height:23px;border-radius:50%;border:2px solid #e1e4e8;cursor:pointer;transition:.2s}
+    .MED.produ .ProdCores span:hover{transform:scale(1.15);outline:2px solid #ffd400}
+    .MED.produ .ProdVolumes{display:flex;gap:5px}
+    .MED.produ .ProdVolumes button{flex:1;min-width:0;background:#f8fafc;color:#303742;border:1px solid #cdd3da;border-radius:8px;font-size:12px;height:35px}
+    .MED.produ .ProdVolumes button:hover,.MED.produ .ProdVolumes button.On{background:#fff4bc;border-color:#ffd400;transform:none}
+    .MED.produ .ProdBotoes{display:flex;gap:7px}
+    .MED.produ .ProdBotoes button{flex:1;height:40px;border-radius:9px;background:#e9edf1;color:#202631;font-size:12px;font-weight:bold}
+    .MED.produ .ProdBotoes .AddCarr{background:#ffd400;color:#111;flex:1.25}
+    .MED.produ .ProdBotoes .AddCarr img{width:19px;height:19px;filter:brightness(0)}
+    .MED.produ .ProdBotoes button:hover{transform:none;filter:brightness(.96)}
+
+    @media(max-width:600px){
+        .MED.produ .ProdFoto{height:165px}
+        .MED.produ .ProdNome{font-size:14px}
+        .MED.produ .ProdPreco{font-size:20px}
+        .MED.produ .ProdBotoes button{font-size:11px;padding:4px}
+    }
+</style>
+
+<script>
+    
+    const IconLoja=(n)=>`<img src="./IconSVG/${n}.svg" alt="" class="IconLoja">`
+    const Dinheiro=n=>Number(n).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})
+    const Unicos=arr=>[...new Set(arr)]
+
+    const Tm_Filtros=()=>{
+        const P=J.PROD, Cats=Unicos(P.map(e=>e.Cat)), Vols=Unicos(P.flatMap(e=>e.Vol||[])), Cores=Unicos(P.flatMap(e=>e.Cor||[])), Max=Math.ceil(Math.max(0,...P.map(e=>e.Valr)))
+        return `<div class="Boxxys FiltroBox">
+            <div class="Bt"><h3>${IconLoja('filter')} Filtros</h3><button class="Limpar" onclick="LimparFiltros()">Limpar</button></div>
+            <div class="FiltroGrupo"><h4>Categorias</h4>
+                <div class="FiltroCategorias">
+                    <button class="On" data-cat="" onclick="FiltroCat(this,'')"><span>Todos os Produtos</span><b>${P.length}</b></button>
+                    ${Cats.map(c=>`<button data-cat="${c}" onclick="FiltroCat(this,${JSON.stringify(c).replace(/"/g,'&quot;')})"><span>${c}</span><b>${P.filter(e=>e.Cat===c).length}</b></button>`).join('')}
+                </div>
+            </div>
+            <div class="FiltroGrupo"><h4>Faixa de preço</h4>
+                <input id="FiltroPreco" type="range" min="0" max="${Max}" value="${Max}" oninput="FiltrarProdutos()">
+                <div class="Bt"><small>R$ 0,00</small><strong id="PrecoMax">${Dinheiro(Max)}</strong></div>
+            </div>
+            <div class="FiltroGrupo"><h4>Volume / Embalagem</h4>
+                <div class="FiltroChecks">${Vols.map(v=>`<label><input type="checkbox" name="vol" value="${v}" onchange="FiltrarProdutos()"> ${v}</label>`).join('')}</div>
+            </div>
+            <div class="FiltroGrupo"><h4>Cores disponíveis</h4>
+                <div class="FiltroCores">${Cores.map(c=>`<label title="${c}"><input type="checkbox" name="cor" value="${c}" onchange="FiltrarProdutos()"><span style="background:${CoresHex[c]||'#aaa'}"></span></label>`).join('')}</div>
+            </div>
+            <div class="FiltroGrupo"><h4>Acabamento</h4>
+                <div class="FiltroChecks">${["Fosco","Acetinado","Semibrilho","Brilhante","Texturizado"].map(a=>`<label><input type="checkbox" name="acab" value="${a}" onchange="FiltrarProdutos()"> ${a}</label>`).join('')}</div>
+            </div>
+            <div class="FiltroGrupo"><h4>Avaliação mínima</h4>
+                <select id="FiltroStar" onchange="FiltrarProdutos()"><option value="0">Todas as avaliações</option>${[5,4,3,2,1].map(n=>`<option value="${n}">${'★'.repeat(n)} ou mais</option>`).join('')}</select>
+            </div>
+        </div>`
+    }
+
+    const Tm_HeadProds=(total=J.PROD.length)=>`<div class="Boxxys HeadLoja Bt">
+        <div class="HeadQtd"><b id="QtdProdutos">${total}</b> produtos encontrados</div>
+        <div class="Ct gap">
+            <span>Ordenar por:</span>
+            <select id="OrdemProds" onchange="FiltrarProdutos()">
+                <option value="relevancia">Mais relevantes</option>
+                <option value="menor">Menor preço</option>
+                <option value="maior">Maior preço</option>
+                <option value="nome">Nome A-Z</option>
+                <option value="avaliacao">Melhor avaliados</option>
+            </select>
+            <div class="ModoProds Ct gap">
+                <button class="On" data-modo="grid" onclick="ModoProdutos('grid')">${IconLoja('grid')}</button>
+                <button data-modo="lista" onclick="ModoProdutos('lista')">${IconLoja('list')}</button>
+            </div>
+        </div>
+    </div>`
+    
+    const CoresHex={Branco:"#fff",Gelo:"#eee9dc",Palha:"#e8d7a1",Cinza:"#888",Preto:"#111",Terracota:"#c66a45",Azul:"#168bff",Verde:"#24a148",Vermelho:"#e53935",Amarelo:"#ffd400",Areia:"#cbb89c",Bege:"#dbc2a4",Grafite:"#444",Concreto:"#999",Cerâmica:"#b96037",Incolor:"#ffffff40"}
+    let CatAtual='',ModoAtual='grid'
+
+    function FiltroCat(btn,cat){
+        CatAtual=cat
+        $$('.FiltroCategorias button').forEach(e=>e.classList.toggle('On',e===btn))
+        FiltrarProdutos()
+    }
+
+    function FiltrarProdutos(){
+        const F=$('#Filtros'),Marcados=n=>[...F.querySelectorAll(`input[name="${n}"]:checked`)].map(e=>e.value)
+        const vols=Marcados('vol'),cores=Marcados('cor'),acab=Marcados('acab'),preco=+$('#FiltroPreco',F).value,star=+$('#FiltroStar',F).value
+        let R=J.PROD.filter(e=>
+            (!CatAtual||e.Cat===CatAtual)&&e.Valr<=preco&&e.Star>=star&&
+            (!vols.length||vols.some(v=>e.Vol?.includes(v)))&&
+            (!cores.length||cores.some(c=>e.Cor?.includes(c)))&&
+            (!acab.length||acab.some(a=>[e.Nome,...(e.Tags||[])].join(' ').toLowerCase().includes(a.toLowerCase())))
+        )
+        const ordem=$('#OrdemProds').value
+        if(ordem==='menor')R.sort((a,b)=>a.Valr-b.Valr)
+        if(ordem==='maior')R.sort((a,b)=>b.Valr-a.Valr)
+        if(ordem==='nome')R.sort((a,b)=>a.Nome.localeCompare(b.Nome,'pt-BR'))
+        if(ordem==='avaliacao')R.sort((a,b)=>b.Star-a.Star||b.Avalia-a.Avalia)
+        $('#PrecoMax',F).textContent=Dinheiro(preco)
+        $('#QtdProdutos').textContent=R.length
+        const alvo=$('#Div-Prods')
+        alvo.innerHTML=R.length?Tm_Prod2('MED',R):'<div class="SemProdutos">Nenhum produto encontrado com esses filtros.</div>'
+        alvo.classList.toggle('ListaProdutos',ModoAtual==='lista')
+    }
+
+    function ModoProdutos(modo){
+        ModoAtual=modo
+        $$('.ModoProds button').forEach(b=>b.classList.toggle('On',b.dataset.modo===modo))
+        $('#Div-Prods').classList.toggle('ListaProdutos',modo==='lista')
+    }
+
+    function LimparFiltros(){
+        const F=$('#Filtros')
+        $$('input[type="checkbox"]',F).forEach(e=>e.checked=false)
+        $('#FiltroPreco',F).value=$('#FiltroPreco',F).max
+        $('#FiltroStar',F).value='0'
+        $('#OrdemProds').value='relevancia'
+        CatAtual=''
+        $$('.FiltroCategorias button',F).forEach(b=>b.classList.toggle('On',b.dataset.cat===''))
+        FiltrarProdutos()
+    }
+
+    function IniciarLoja(){
+        Inn('#Filtros',Tm_Filtros())
+        Inn('#HeadProds',Tm_HeadProds())
+        FiltrarProdutos()
+    }
+
+</script>
+
 <script>
     ['DPIM','FOOT','CORS','PROD'].forEach(Typ=>{fazJJJ(Typ,J[Typ])})
     Onloads('body')
@@ -425,7 +658,9 @@
         es.forEach(x=>x.isIntersecting&&x.target.classList.add('Show'))
     },{threshold:.15})
 
-    document.querySelectorAll('[class*="An-"]').forEach(e=>Obs.observe(e))
+    $$('[class*="An-"]').forEach(e=>Obs.observe(e))
+
+    IniciarLoja()
 </script>
 
 </html>
